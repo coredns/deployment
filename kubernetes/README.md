@@ -28,12 +28,3 @@ $ ./deploy.sh 10.3.0.0/24 | kubectl apply -f -
 $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
 
-Kubernetes 1.6 uses Role Based Access Control (RBAC).  The following example uses the 1.6 yaml
-tamplate to replace Kube-DNS and add the RBAC needed for CoreDNS to access the API.
-
-~~~
-$ ./deploy.sh 10.3.0.0/24 cluster.local coredns-1.6.yaml.sed | kubectl apply -f -
-$ kubectl delete --namespace=kube-system deployment kube-dns
-~~~
-
-Note that the CIDR's netmask needs to be a multiple of 8.
