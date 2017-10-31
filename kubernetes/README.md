@@ -28,3 +28,5 @@ $ ./deploy.sh 10.3.0.0/24 | kubectl apply -f -
 $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
 
+-Note that the CIDR's netmask needs to be a multiple of 8.
+
