@@ -58,6 +58,7 @@ class Coredns < Formula
     end
 
     (buildpath/"Corefile.example").write default_coredns_config
+    (etc/"coredns").mkpath
     etc.install "Corefile.example" => "coredns/Corefile"
   end
 
