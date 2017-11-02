@@ -30,3 +30,6 @@ $ kubectl delete --namespace=kube-system deployment kube-dns
 
 -Note that the CIDR's netmask needs to be a multiple of 8.
 
+For non-RBAC deployments, you'll need to edit the resulting yaml before applying it:
+1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
+2. Remove the `ServiceAccount`, `ClusterRole`, and `ClusterRoleBinding` sections.
