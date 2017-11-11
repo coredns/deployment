@@ -7,12 +7,12 @@ DISTRIBUTION    := $(shell lsb_release -sr)
 PACKAGEVERSION  := $(VERSION)-0~$(DISTRIBUTION)0
 TARBALL         := coredns_$(VERSION)_linux_$(DEB_TARGET_ARCH).tgz
 
-# Debian calls is armhf, we call it arm.
+# Debian calls it armhf, we call it arm.
 ifeq ($(DEB_TARGET_ARCH),armhf)
-    TARBALL         := coredns_$(VERSION)_linux_arm.tgz
+    TARBALL := coredns_$(VERSION)_linux_arm.tgz
 endif
 
-URL             := https://github.com/coredns/coredns/releases/download/v$(VERSION)/$(TARBALL)
+URL := https://github.com/coredns/coredns/releases/download/v$(VERSION)/$(TARBALL)
 
 %:
 	dh_clean
