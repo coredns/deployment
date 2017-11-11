@@ -1,0 +1,8 @@
+Source: coredns
+Maintainer: Miek Gieben <miek@coredns.io>
+Build-Depends: debhelper (>= 9), ca-certificates, wget, dh-systemd
+
+Package: coredns
+Architecture: any
+Description: DNS server that chains plugins
+Depends: adduser

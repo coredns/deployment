@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+
+VERSION := 0.9.10
+
+DEB_HOST_ARCH   := $(DEB_TARGET_ARCH)
+DISTRIBUTION    := $(shell lsb_release -sr)
+PACKAGEVERSION  := $(VERSION)-0~$(DISTRIBUTION)0
+TARBALL         := coredns_$(VERSION)_linux_$(DEB_TARGET_ARCH).tgz
+URL             := https://github.com/coredns/coredns/releases/download/v$(VERSION)/$(TARBALL)
+
+%:
+	dh_clean
+	dh $@ --with systemd
+
+override_dh_strip:
+	# don't perform dh_strip
+	echo dh_strip
+
+override_dh_auto_clean:
+override_dh_auto_test:
+override_dh_auto_build:
+override_dh_auto_install:
+	wget -N --progress=dot:mega $(URL)
+	mkdir -p debian/coredns/usr/bin debian/coredns/etc/coredns
+	tar -xf $(TARBALL) -C debian/coredns/usr/bin
+	cp debian/Corefile debian/coredns/etc/coredns/Corefile
+
+override_dh_gencontrol:
+	dh_gencontrol -- -v$(PACKAGEVERSION)
