@@ -82,7 +82,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:0.9.9
+        image: coredns/coredns:0.9.10
         imagePullPolicy: Always
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
