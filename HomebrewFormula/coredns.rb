@@ -3,8 +3,8 @@ require "language/go"
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io"
-  url "https://github.com/coredns/coredns/archive/v0.9.9.tar.gz"
-  sha256 "9ca565bfbd708bd9bc66db20ec2feb3cd2a3354cf8590ba99bf2871fb847413b"
+  url "https://github.com/coredns/coredns/archive/v0.9.10.tar.gz"
+  sha256 "655ad5ae4a819bf1237ea570a941bf205252c16cdae9d253a832085b26888c33"
   head "https://github.com/coredns/coredns.git"
 
   def default_coredns_config; <<~EOS
