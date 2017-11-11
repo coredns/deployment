@@ -1,4 +1,5 @@
 # Systemd Service File
 
-Use `coredns.service` as a systemd service file. It defaults to a coredns with a homedir of `/home/coredns`
-and the binary lives in `/opt/bin` and the config in `/etc/coredns/Corefile`.
+Use `coredns.service` as a systemd service file. It defaults to using a "coredns" user with
+a homedir of `/var/lib/coredns` and the binary lives in `/usr/bin` and the config in
+`/etc/coredns/Corefile`.

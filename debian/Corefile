@@ -1,0 +1,9 @@
+# Default Corefile, see https://coredns.io for more information.
+
+# Answer every below the root, with the whoami plugin. Log all queries
+# and errors on standard output.
+. {
+    whoami  # coredns.io/plugins/whoami
+    log     # coredns.io/plugins/log
+    errors  # coredns.io/plugins/errors
+}

@@ -1,0 +1,5 @@
+coredns (0-0) UNRELEASED; urgency=medium
+
+  * Package for Debian.
+
+ -- Miek Gieben <miek@coredns.io>  Sat, 11 Nov 2017 09:52:00 +0000
