@@ -1,6 +1,6 @@
 Source: coredns
 Maintainer: Miek Gieben <miek@coredns.io>
-Build-Depends: debhelper (>= 9), ca-certificates, wget, dh-systemd
+Build-Depends: debhelper (>= 9), ca-certificates, wget, dh-systemd, lsb-release
 
 Package: coredns
 Architecture: any
