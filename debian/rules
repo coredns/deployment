@@ -1,6 +1,10 @@
 #!/usr/bin/make -f
 
-VERSION := 0.9.10
+VERSION := $(shell curl -s https://api.github.com/repos/coredns/coredns/releases/latest  | jq -r '.tag_name[1:length]')
+# Github is ratelimiting this API pretty aggresively, error when not set.
+ifeq ($(VERSION),null)
+    $(error No version found)
+endif
 
 DEB_HOST_ARCH   := $(DEB_TARGET_ARCH)
 DISTRIBUTION    := $(shell lsb_release -sr)
@@ -26,7 +30,7 @@ override_dh_auto_clean:
 override_dh_auto_test:
 override_dh_auto_build:
 override_dh_auto_install:
-	wget -N --progress=dot:mega $(URL)
+	curl -L $(URL) -o $(TARBALL)
 	mkdir -p debian/coredns/usr/bin debian/coredns/etc/coredns
 	tar -xf $(TARBALL) -C debian/coredns/usr/bin
 	cp debian/Corefile debian/coredns/etc/coredns/Corefile
