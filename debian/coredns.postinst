@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    configure)
+        if ! getent passwd coredns > /dev/null; then
+            adduser --system --disabled-password --disabled-login --home /var/lib/coredns \
+                    --quiet --force-badname --group coredns
+        fi
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
