@@ -3,7 +3,7 @@
 # Build the debian packages
 .PHONY: debian
 debian:
-	dpkg-buildpackage -us -uc -b --target-arch amd64   
+	dpkg-buildpackage -us -uc -b --target-arch amd64
 	dpkg-buildpackage -us -uc -b --target-arch armhf
 	dpkg-buildpackage -us -uc -b --target-arch arm64
 	# debs are one up
