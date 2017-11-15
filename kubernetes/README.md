@@ -15,20 +15,18 @@ to use the CoreDNS deployment. By re-using the existing service, there is no dis
 servicing requests.
 
 The script doesn't delete the kube-dns deployment or replication controller - you'll have to
-do that manually.
+do that manually, after deploying CoreDNS.
 
 You should examine the manifest carefully and make sure it is correct for your particular
 cluster. Depending on how you have built your cluster and the version you are running,
 some modifications to the manifest may be needed.
 
-In the best case scenario, all that's needed to replace Kube-DNS are these two commands:
+In the best case scenario, all that's needed to replace Kube-DNS are these two commands (replacing the CIDRs with the service and pod CIDRs in your deployment respectively):
 
 ~~~
-$ ./deploy.sh 10.3.0.0/24 | kubectl apply -f -
+$ ./deploy.sh 10.3.0.0/12 172.17.0.0/16 | kubectl apply -f -
 $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
-
--Note that the CIDR's netmask needs to be a multiple of 8.
 
 For non-RBAC deployments, you'll need to edit the resulting yaml before applying it:
 1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
