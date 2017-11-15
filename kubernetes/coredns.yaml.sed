@@ -50,7 +50,7 @@ data:
         errors
         log stdout
         health
-        kubernetes CLUSTER_DOMAIN SERVICE_CIDR
+        kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR
         proxy . /etc/resolv.conf
         cache 30
     }
