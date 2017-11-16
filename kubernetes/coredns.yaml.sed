@@ -48,7 +48,7 @@ data:
   Corefile: |
     .:53 {
         errors
-        log stdout
+        log
         health
         kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR
         proxy . /etc/resolv.conf
