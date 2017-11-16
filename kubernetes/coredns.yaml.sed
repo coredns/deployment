@@ -62,7 +62,6 @@ metadata:
   namespace: kube-system
   labels:
     k8s-app: coredns
-    kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
 spec:
   replicas: 1
