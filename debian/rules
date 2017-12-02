@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-VERSION := 0.9.10
+VERSION := 1.0.0
 
 DEB_HOST_ARCH   := $(DEB_TARGET_ARCH)
 DISTRIBUTION    := $(shell lsb_release -sr)
