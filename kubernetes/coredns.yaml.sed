@@ -51,9 +51,7 @@ data:
         log
         health
         kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR
-        prometheus {
-            0.0.0.0:9153
-        }
+        prometheus :9153
         proxy . /etc/resolv.conf
         cache 30
     }
