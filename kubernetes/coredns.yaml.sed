@@ -51,6 +51,9 @@ data:
         log
         health
         kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR
+        prometheus {
+            0.0.0.0:9153
+        }
         proxy . /etc/resolv.conf
         cache 30
     }
@@ -81,7 +84,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:0.9.10
+        image: coredns/coredns:1.0.0
         imagePullPolicy: Always
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
