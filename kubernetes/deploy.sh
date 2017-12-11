@@ -13,5 +13,9 @@ if [[ -z $SERVICE_CIDR ]]; then
 fi
 
 CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
+if [ $? -ne 0 ]; then
+    >&2 echo "Error! The IP address for DNS service couldn't be determined by kubectl command"
+    exit 2
+fi
 
 sed -e s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g -e s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g -e s?SERVICE_CIDR?$SERVICE_CIDR?g -e s?POD_CIDR?$POD_CIDR?g $YAML_TEMPLATE
