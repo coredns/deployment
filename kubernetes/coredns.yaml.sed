@@ -83,7 +83,7 @@ spec:
       containers:
       - name: coredns
         image: coredns/coredns:1.0.1
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
         - name: config-volume
