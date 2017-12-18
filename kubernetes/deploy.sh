@@ -16,7 +16,7 @@ fi
 if [[ -z $CLUSTER_DNS_IP ]]; then
   CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
   if [ $? -ne 0 ]; then
-      >&2 echo "Error! The IP address for DNS service couldn't be determined by kubectl command"
+      >&2 echo "Error! The IP address for DNS service couldn't be determined automatically. Please specify the DNS-IP in paramaters."
       exit 2
   fi
 fi
