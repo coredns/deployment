@@ -51,6 +51,7 @@ data:
         log
         health
         kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR {
+          pods insecure
           upstream /etc/resolv.conf
         }
         prometheus :9153
