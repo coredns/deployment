@@ -68,7 +68,11 @@ metadata:
     k8s-app: coredns
     kubernetes.io/name: "CoreDNS"
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   selector:
     matchLabels:
       k8s-app: coredns
