@@ -50,7 +50,7 @@ data:
         errors
         log
         health
-        kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR {
+        kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
           upstream /etc/resolv.conf
         }
