@@ -48,7 +48,6 @@ data:
   Corefile: |
     .:53 {
         errors
-        log
         health
         kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR {
           pods insecure
@@ -102,9 +101,6 @@ spec:
         - containerPort: 53
           name: dns-tcp
           protocol: TCP
-        - containerPort: 9153
-          name: metrics
-          protocol: TCP
         livenessProbe:
           httpGet:
             path: /health
@@ -142,7 +138,4 @@ spec:
     protocol: UDP
   - name: dns-tcp
     port: 53
-    protocol: TCP
-  - name: metrics
-    port: 9153
     protocol: TCP
