@@ -1,0 +1,31 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "COREFILE" "5" "January 2018" "CoreDNS" "CoreDNS"
+.
+.SH "NAME"
+\fBcorefile\fR
+.
+.SH "NAME"
+\fIcorefile\fR \- configuration file for CoreDNS
+.
+.SH "DESCRIPTION"
+A \fBcorefile\fR
+.
+.P
+CoreDNS is a DNS server that chains plugins\. Each plugin handles a DNS feature, like rewriting queries, kubernetes service discovery or just exporting metrics\. There are many other plugins, each described on \fIhttps://coredns\.io/plugins\fR and there respective manual pages\.
+.
+.P
+When started with no options CoreDNS will looks for a file names \fBCorefile\fR in the current directory, if found it will parse its contents and start up accordingly\. If no \fBCorefile\fR is found it will start with the \fIwhoami\fR plugin (coredns\-whoami(7)) and start listening on port 53 (unless overriden with \fB\-dns\.port\fR)\.
+.
+.P
+Available options:
+.
+.SH "AUTHORS"
+CoreDNS Authors\.
+.
+.SH "COPYRIGHT"
+Apache License 2\.0
+.
+.SH "SEE ALSO"
+Corefile(5) @@PLUGINS@@\.
