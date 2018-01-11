@@ -1,10 +1,17 @@
 # Makefile for building packages for CoreDNS.
 
-# Build the debian packages
+# ARCH can be and default to amd64 is not set.
+# ARCH := amd64 armhf arm64
+
+ifeq ($(ARCH),)
+    ARCH:=amd64
+endif
+
 .PHONY: debian
 debian:
-	dpkg-buildpackage -us -uc -b --target-arch amd64
-	dpkg-buildpackage -us -uc -b --target-arch armhf
-	dpkg-buildpackage -us -uc -b --target-arch arm64
-	# debs are one up
-	ls ../*.deb
+	for a in $(ARCH); do \
+	    dpkg-buildpackage -us -uc -b --target-arch $$aa ;\
+	done
+
+debian-clean:
+	rm *.tgz

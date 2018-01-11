@@ -17,6 +17,7 @@ ifeq ($(DEB_TARGET_ARCH),armhf)
 endif
 
 URL := https://github.com/coredns/coredns/releases/download/v$(VERSION)/$(TARBALL)
+SRC := https://github.com/coredns/coredns/archive/v$(VERSION).tar.gz
 
 %:
 	dh_clean
@@ -31,8 +32,12 @@ override_dh_auto_test:
 override_dh_auto_build:
 override_dh_auto_install:
 	curl -L $(URL) -o $(TARBALL)
+	curl -L $(SRC) -o v$(VERSION).tar.gz
 	mkdir -p debian/coredns/usr/bin debian/coredns/etc/coredns
+	mkdir -p debian/man v$(VERSION)
 	tar -xf $(TARBALL) -C debian/coredns/usr/bin
+	tar -xf v$(VERSION).tar.gz -C v$(VERSION)
+	cp v$(VERSION)/coredns-$(VERSION)/man/* man/
 	cp debian/Corefile debian/coredns/etc/coredns/Corefile
 
 override_dh_gencontrol:
