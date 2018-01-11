@@ -10,6 +10,7 @@ DEB_HOST_ARCH   := $(DEB_TARGET_ARCH)
 DISTRIBUTION    := $(shell lsb_release -sr)
 PACKAGEVERSION  := $(VERSION)-0~$(DISTRIBUTION)0
 TARBALL         := coredns_$(VERSION)_linux_$(DEB_TARGET_ARCH).tgz
+VTARBALL        := v$(VERSION).tar.gz
 
 # Debian calls it armhf, we call it arm.
 ifeq ($(DEB_TARGET_ARCH),armhf)
@@ -17,6 +18,7 @@ ifeq ($(DEB_TARGET_ARCH),armhf)
 endif
 
 URL := https://github.com/coredns/coredns/releases/download/v$(VERSION)/$(TARBALL)
+SRC := https://github.com/coredns/coredns/archive/v$(VERSION).tar.gz
 
 %:
 	dh_clean
@@ -30,9 +32,13 @@ override_dh_auto_clean:
 override_dh_auto_test:
 override_dh_auto_build:
 override_dh_auto_install:
-	curl -L $(URL) -o $(TARBALL)
+	if [ ! -e $(TARBALL) ]; then curl -L $(URL) -o $(TARBALL); fi
+	if [ ! -e $(VTARBALL) ]; then  curl -L $(SRC) -o $(VTARBALL); fi
 	mkdir -p debian/coredns/usr/bin debian/coredns/etc/coredns
+	mkdir -p debian/man v$(VERSION)
 	tar -xf $(TARBALL) -C debian/coredns/usr/bin
+	tar -xf $(VTARBALL) -C v$(VERSION)
+	cp v$(VERSION)/coredns-$(VERSION)/man/* debian/man/
 	cp debian/Corefile debian/coredns/etc/coredns/Corefile
 
 override_dh_gencontrol:
