@@ -1,10 +1,11 @@
 # Kubernetes
 
 CoreDNS can run in place of the standard Kube-DNS in Kubernetes. Using the *kubernetes*
-middleware, CoreDNS will read zone data from a Kubernetes cluster. It implements the
+plugin, CoreDNS will read zone data from a Kubernetes cluster. It implements the
 spec defined for Kubernetes DNS-Based service discovery:
 
    https://github.com/kubernetes/dns/blob/master/docs/specification.md
+
 
 ## deploy.sh and coredns.yaml.sed
 
