@@ -49,9 +49,10 @@ data:
     .:53 {
         errors
         health
-        kubernetes CLUSTER_DOMAIN SERVICE_CIDR POD_CIDR {
+        kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
           upstream /etc/resolv.conf
+          fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
         proxy . /etc/resolv.conf

@@ -21,10 +21,10 @@ You should examine the manifest carefully and make sure it is correct for your p
 cluster. Depending on how you have built your cluster and the version you are running,
 some modifications to the manifest may be needed.
 
-In the best case scenario, all that's needed to replace Kube-DNS are these two commands (replacing the CIDRs with the service and pod CIDRs in your deployment respectively):
+In the best case scenario, all that's needed to replace Kube-DNS are these two commands:
 
 ~~~
-$ ./deploy.sh 10.3.0.0/12 172.17.0.0/16 | kubectl apply -f -
+$ ./deploy.sh | kubectl apply -f -
 $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
 
