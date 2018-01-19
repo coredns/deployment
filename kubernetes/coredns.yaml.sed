@@ -101,7 +101,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.0.3
+        image: coredns/coredns:1.0.4
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
