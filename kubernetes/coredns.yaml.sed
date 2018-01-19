@@ -52,6 +52,7 @@ data:
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
           upstream /etc/resolv.conf
+          fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
         proxy . /etc/resolv.conf
