@@ -33,4 +33,4 @@ For non-RBAC deployments, you'll need to edit the resulting yaml before applying
 1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
 2. Remove the `ServiceAccount`, `ClusterRole`, and `ClusterRoleBinding` sections.
 
-TEST 10
+TEST 11
