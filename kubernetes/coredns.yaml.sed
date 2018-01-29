@@ -57,6 +57,7 @@ data:
         prometheus :9153
         proxy . /etc/resolv.conf
         cache 30
+        reload
     }
 ---
 apiVersion: extensions/v1beta1
