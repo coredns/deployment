@@ -4,13 +4,14 @@
 
 show_help () {
 cat << USAGE
-usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ]
+usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ] [ -6 ]
 
     -r : Define a reverse zone for the given CIDR. You may specifcy this option more
          than once to add multiple reverse zones. If no reverse CIDRs are defined,
          then the default is to handle all reverse zones (i.e. in-addr.arpa and ip6.arpa)
     -i : Specify the cluster DNS IP address. If not specificed, the IP address of
          the existing "kube-dns" service is used, if present.
+    -6 : Deploy for IPv6 only pod network environment
 USAGE
 exit 0
 }
@@ -18,10 +19,10 @@ exit 0
 # Simple Defaults
 CLUSTER_DOMAIN=cluster.local
 YAML_TEMPLATE=`pwd`/coredns.yaml.sed
-
+LOCALHOST_IP=127.0.0.1:53
 
 # Get Opts
-while getopts "hr:i:d:t:" opt; do
+while getopts "hr:i:d:t:6" opt; do
     case "$opt" in
     h)  show_help
         ;;
@@ -32,6 +33,8 @@ while getopts "hr:i:d:t:" opt; do
     d)  CLUSTER_DOMAIN=$OPTARG
         ;;
     t)  YAML_TEMPLATE=$OPTARG
+        ;;
+    6)  LOCALHOST_IP=[::1]:53
         ;;
     esac
 done
@@ -49,4 +52,4 @@ if [[ -z $CLUSTER_DNS_IP ]]; then
   fi
 fi
 
-sed -e s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g -e s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g -e "s?REVERSE_CIDRS?$REVERSE_CIDRS?g" $YAML_TEMPLATE
+sed -e s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g -e s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g -e "s?REVERSE_CIDRS?$REVERSE_CIDRS?g" -e "s?LOCALHOST_IP?$LOCALHOST_IP?g" $YAML_TEMPLATE

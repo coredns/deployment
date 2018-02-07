@@ -51,7 +51,7 @@ data:
         health
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
-          upstream /etc/resolv.conf
+          upstream LOCALHOST_IP
           fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
