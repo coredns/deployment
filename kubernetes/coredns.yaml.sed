@@ -51,7 +51,7 @@ data:
         health
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
-          upstream /etc/resolv.conf
+          upstream
           fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
@@ -87,7 +87,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.0.4
+        image: coredns/coredns:1.0.6
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
