@@ -100,6 +100,9 @@ spec:
         - containerPort: 53
           name: dns-tcp
           protocol: TCP
+        - containerPort: 9153
+          name: metrics
+          protocol: TCP
         livenessProbe:
           httpGet:
             path: /health
@@ -123,6 +126,8 @@ kind: Service
 metadata:
   name: kube-dns
   namespace: kube-system
+  annotations:
+    prometheus.io/scrape: "true"
   labels:
     k8s-app: coredns
     kubernetes.io/cluster-service: "true"
