@@ -57,6 +57,7 @@ data:
         prometheus :9153
         proxy . /etc/resolv.conf
         cache 30
+        reload
     }
 ---
 apiVersion: extensions/v1beta1
@@ -87,7 +88,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.1.1
+        image: coredns/coredns:1.1.2
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
