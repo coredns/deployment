@@ -106,7 +106,6 @@ spec:
           name: metrics
           protocol: TCP
         securityContext:
-          allowPrivilegeEscalation: false
           capabilities:
             add:
             - NET_BIND_SERVICE
