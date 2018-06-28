@@ -137,6 +137,7 @@ metadata:
   name: kube-dns
   namespace: kube-system
   annotations:
+    prometheus.io/port: "9153"
     prometheus.io/scrape: "true"
   labels:
     k8s-app: kube-dns
