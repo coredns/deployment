@@ -58,6 +58,7 @@ data:
         proxy . /etc/resolv.conf
         cache 30
         reload
+        loadbalance
     }
 ---
 apiVersion: extensions/v1beta1
@@ -88,7 +89,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.1.3
+        image: coredns/coredns:1.2.0
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
