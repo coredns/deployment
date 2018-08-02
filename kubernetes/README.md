@@ -1,5 +1,15 @@
 # Kubernetes
 
+## Notice
+
+We are conducting a [survey](https://www.surveymonkey.com/r/SKZQSLK) to evaluate the adoption of CoreDNS as the DNS for Kubernetes's cluster. 
+If you are in such configuration, **please help us by [providing your feedback](https://www.surveymonkey.com/r/SKZQSLK)**
+
+Thank you, we appreciate your collaboration here.
+
+
+
+## Description
 CoreDNS can run in place of the standard Kube-DNS in Kubernetes. Using the *kubernetes*
 plugin, CoreDNS will read zone data from a Kubernetes cluster. It implements the
 spec defined for Kubernetes DNS-Based service discovery:
