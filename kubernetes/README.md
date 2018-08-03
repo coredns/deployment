@@ -39,8 +39,7 @@ $ ./deploy.sh | kubectl apply -f -
 $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
 
-NOTE: It is recommended to delete the kube-dns deployment. Otherwise, if both CoreDNS and kube-dns are running, queries may randomly hit either
-CoreDNS or kube-dns.
+**NOTE:** You will need to delete the kube-dns deployment (as above) since while CoreDNS and kube-dns are running at the same time, queries may randomly hit either one.
 
 For non-RBAC deployments, you'll need to edit the resulting yaml before applying it:
 1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
