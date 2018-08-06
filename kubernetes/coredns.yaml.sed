@@ -90,8 +90,13 @@ spec:
       containers:
       - name: coredns
         image: coredns/coredns:1.2.0
-        imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
+        # TODO: These resources are generic value for generic deployment.
+        # please adjust it according to you size and expected load.
+        resources:
+          requests:
+            cpu: 100m
+            memory: 70Mi
         volumeMounts:
         - name: config-volume
           mountPath: /etc/coredns
