@@ -1,11 +1,9 @@
 # Kubernetes
 
-## Notice
+> **Notice**: We are conducting a [survey](https://www.surveymonkey.com/r/SKZQSLK) to evaluate the adoption of CoreDNS as the DNS for Kubernetes's cluster. 
+> If you are in such configuration, **please help us by [providing your feedback](https://www.surveymonkey.com/r/SKZQSLK)**
 
-We are conducting a [survey](https://www.surveymonkey.com/r/SKZQSLK) to evaluate the adoption of CoreDNS as the DNS for Kubernetes's cluster. 
-If you are in such configuration, **please help us by [providing your feedback](https://www.surveymonkey.com/r/SKZQSLK)**
-
-Thank you, we appreciate your collaboration here.
+> Thank you, we appreciate your collaboration here.
 
 
 
