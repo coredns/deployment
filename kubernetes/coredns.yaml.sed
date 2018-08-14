@@ -85,12 +85,20 @@ spec:
     spec:
       serviceAccountName: coredns
       tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
         - key: "CriticalAddonsOnly"
           operator: "Exists"
       containers:
       - name: coredns
         image: coredns/coredns:1.2.0
         imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 170Mi
+          requests:
+            cpu: 100m
+            memory: 70Mi
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
         - name: config-volume
