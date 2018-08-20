@@ -41,3 +41,21 @@ $ kubectl delete --namespace=kube-system deployment kube-dns
 For non-RBAC deployments, you'll need to edit the resulting yaml before applying it:
 1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
 2. Remove the `ServiceAccount`, `ClusterRole`, and `ClusterRoleBinding` sections.
+
+
+## Rollback to kube-dns
+
+In case one wants to revert a Kubernetes cluster running CoreDNS back to kube-dns,
+the `rollback.sh` script generates the kube-dns manifest to install kube-dns.
+This uses the existing service, there is no disruption in servicing requests.
+
+The script doesn't delete the CoreDNS deployment or replication controller - you'll have to
+do that manually, after deploying kube-dns.
+
+These commands will deploy kube-dns replacing CoreDNS:
+~~~
+$ ./rollback.sh | kubectl apply -f -
+$ kubectl delete --namespace=kube-system deployment coredns
+~~~
+
+**NOTE:** You will need to delete the CoreDNS deployment (as above) since while CoreDNS and kube-dns are running at the same time, queries may randomly hit either one.
