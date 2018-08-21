@@ -22,6 +22,9 @@ it creates a ConfigMap and a CoreDNS deployment, then updates the Kube-DNS servi
 to use the CoreDNS deployment. By re-using the existing service, there is no disruption in
 servicing requests.
 
+By default, the deployment script also translates the existing kube-dns configuration into the equivalent CoreDNS Corefile.
+By providing the `-s` option, the deployment script will skip the translation of the ConfigMap from kube-dns to CoreDNS.
+
 The script doesn't delete the kube-dns deployment or replication controller - you'll have to
 do that manually, after deploying CoreDNS.
 
@@ -29,7 +32,7 @@ You should examine the manifest carefully and make sure it is correct for your p
 cluster. Depending on how you have built your cluster and the version you are running,
 some modifications to the manifest may be needed.
 
-In the best case scenario, all that's needed to replace Kube-DNS are these two commands:
+In the best case scenario, all that's needed to replace Kube-DNS are these commands:
 
 ~~~
 $ ./deploy.sh | kubectl apply -f -
