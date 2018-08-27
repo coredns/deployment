@@ -46,7 +46,7 @@ metadata:
   namespace: kube-system
 data:
   Corefile: |
-    .:10053 {
+    .:53 {
         errors
         health
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
@@ -105,10 +105,10 @@ spec:
           mountPath: /etc/coredns
           readOnly: true
         ports:
-        - containerPort: 10053
+        - containerPort: 53
           name: dns
           protocol: UDP
-        - containerPort: 10053
+        - containerPort: 53
           name: dns-tcp
           protocol: TCP
         - containerPort: 9153
@@ -117,6 +117,8 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
+            add:
+            - NET_BIND_SERVICE
             drop:
             - all
           readOnlyRootFilesystem: true
@@ -158,8 +160,6 @@ spec:
   - name: dns
     port: 53
     protocol: UDP
-    targetPort: 10053
   - name: dns-tcp
     port: 53
     protocol: TCP
-    targetPort: 10053
