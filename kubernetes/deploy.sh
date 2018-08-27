@@ -51,6 +51,7 @@ function kube-dns-stubdomains-to-coredns {
     SD_DOMAIN:53 {
       errors
       cache 30
+      loop
       proxy . SD_DESTINATION
     }'
 
