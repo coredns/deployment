@@ -57,6 +57,7 @@ data:
         prometheus :9153
         proxy . UPSTREAMNAMESERVER
         cache 30
+        loop
         reload
         loadbalance
     }STUBDOMAINS
@@ -91,7 +92,7 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.2.0
+        image: coredns/coredns:1.2.1
         imagePullPolicy: IfNotPresent
         resources:
           limits:
