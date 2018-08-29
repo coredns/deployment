@@ -92,11 +92,11 @@ spec:
           operator: "Exists"
       containers:
       - name: coredns
-        image: coredns/coredns:1.2.1
+        image: coredns/coredns:1.2.2
         imagePullPolicy: IfNotPresent
         resources:
           limits:
-            memory: 320Mi
+            memory: 170Mi
           requests:
             cpu: 100m
             memory: 70Mi
