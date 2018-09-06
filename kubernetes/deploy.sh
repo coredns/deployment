@@ -138,4 +138,4 @@ sed -e "s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g" \
     -e "s@STUBDOMAINS@${STUBDOMAINS//$orig/$replace}@g" \
     -e "s@FEDERATIONS@${FEDERATIONS//$orig/$replace}@g" \
     -e "s/UPSTREAMNAMESERVER/$UPSTREAM/g" \
-    ${YAML_TEMPLATE}
+    "${YAML_TEMPLATE}"
