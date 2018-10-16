@@ -2,9 +2,11 @@
 
 # Deploys CoreDNS to a cluster currently running Kube-DNS.
 
+set -eo pipefail
+
 show_help () {
 cat << USAGE
-usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ] [ -k KUBECONFIG ]
+usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ]
 
     -r : Define a reverse zone for the given CIDR. You may specifcy this option more
          than once to add multiple reverse zones. If no reverse CIDRs are defined,
@@ -18,8 +20,9 @@ exit 0
 }
 
 # Simple Defaults
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 CLUSTER_DOMAIN=cluster.local
-YAML_TEMPLATE=`pwd`/coredns.yaml.sed
+YAML_TEMPLATE="$DIR/coredns.yaml.sed"
 STUBDOMAINS=""
 UPSTREAM=\\/etc\\/resolv\.conf
 FEDERATIONS=""
@@ -100,26 +103,16 @@ while getopts "hsr:i:d:t:k:" opt; do
         ;;
     t)  YAML_TEMPLATE=$OPTARG
         ;;
-    k)  KUBECONFIG=$OPTARG
-        ;;
     esac
 done
 
-# Set kubeconfig flag if config specified
-if [[ ! -z $KUBECONFIG ]]; then
-  if [[ -f $KUBECONFIG ]]; then
-    KUBECONFIG="--kubeconfig $KUBECONFIG"
-  else
-    KUBECONFIG=""
-  fi
-fi
 # Conditional Defaults
 if [[ -z $REVERSE_CIDRS ]]; then
   REVERSE_CIDRS="in-addr.arpa ip6.arpa"
 fi
 if [[ -z $CLUSTER_DNS_IP ]]; then
   # Default IP to kube-dns IP
-  CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}" $KUBECONFIG)
+  CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
   if [ $? -ne 0 ]; then
       >&2 echo "Error! The IP address for DNS service couldn't be determined automatically. Please specify the DNS-IP with the '-i' option."
       exit 2

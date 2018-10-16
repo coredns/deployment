@@ -2,6 +2,8 @@
 
 # Roll back kube-dns to the cluster which has CoreDNS installed.
 
+set -eo pipefail
+
 show_help () {
 cat << USAGE
 usage: $0  [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ]
@@ -14,12 +16,12 @@ exit 0
 }
 
 
-curl -L  https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kube-dns/kube-dns.yaml.base > `pwd`/kube-dns.yaml.sed
-
 # Simple Defaults
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 CLUSTER_DOMAIN=cluster.local
-YAML_TEMPLATE=`pwd`/kube-dns.yaml.sed
+YAML_TEMPLATE="$DIR/kube-dns.yaml.sed"
 
+curl -L  https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/kube-dns/kube-dns.yaml.base > "$YAML_TEMPLATE"
 
 # Get Opts
 while getopts "hi:d:" opt; do
