@@ -47,10 +47,12 @@ Max QPS was tested by using the `kubernetes/perf-tests/dns` tool, on a cluster u
 
 Single instance of CoreDNS (default settings) on a GCE n1-standard-2 node:
 
+```
 | Query Type  | QPS  | Avg Latency (ms) | 
 |---|---|---|---|---|
 | external  | 6733<sup>1</sup>  | 12.02<sup>1</sup>  |
 | internal  | 33669  | 2.608  |  
+```
 
 <sup>1</sup> From the server perspective it is processing 33667 QPS with 2.404 ms latency.
 
@@ -60,10 +62,12 @@ The *autopath* plugin in CoreDNS is an option that mitigates the ClusterFirst se
 
 Single instance of CoreDNS (with the *autopath* plugin enabled) on a GCE n1-standard-2 node:
 
+```
 | Query Type  | QPS  | Avg Latency (ms) | 
 |---|---|---|---|---|
 | external  | 31428  | 2.605  | 
 | internal  | 33918  | 2.62  |  
+```
 
 Note that the resulting max QPS for external queries is much higher.  This is due to the *autopath* plugin optimization.
 
