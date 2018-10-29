@@ -12,7 +12,7 @@ In large scale Kubernetes clusters, CoreDNS's memory usage is predominantly affe
 
 To estimate the amount of memory required for a CoreDNS instance (using default settings), you can use the following formula:
 
->  MB required (default settings) = (Pods + Services) * 0.000858 + 49.1
+>  MB required (default settings) = (Pods + Services) / 1000 + 54
 
 This formula has the following baked in:
 
@@ -28,7 +28,7 @@ The *autopath* is an optional optimization that improves performance for queries
 
 To estimate the amount of memory required for a CoreDNS instance (using the *autopath* plugin), you can use the following formula:
 
->  MB required (w/ autopath) = (Pods + Services) * 0.0025 + 50.5
+>  MB required (w/ autopath) = (Pods + Services) / 250 + 56
 
 This formula has the following baked in:
 
