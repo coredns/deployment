@@ -84,7 +84,7 @@ The following Kubernetes end-to-end tests (e2e):
 * pull-kubernetes-e2e-gce-scale-performance: A 5000 node cluster with 150000 Pods, 8200 Services
 
 These tests do not perform any QPS load, so cache and operating buffers were tested separately under load
-and added to the max memory usage of each test.
+and added to the max memory usage of each test to approximate real world memory usages.
 The memory formulas above are based on a best fit linear trend of the following data points.
 
 | Configuraiton  | Pod/Svc Count    | Max Memory (MB)    | Operating Buffer (MB) | Cache (MB) | 
