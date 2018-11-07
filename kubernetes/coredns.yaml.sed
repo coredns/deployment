@@ -100,7 +100,7 @@ spec:
         beta.kubernetes.io/os: linux
       containers:
       - name: coredns
-        image: coredns/coredns:1.2.5
+        image: coredns/coredns:1.2.6
         imagePullPolicy: IfNotPresent
         resources:
           limits:
