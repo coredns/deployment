@@ -77,13 +77,17 @@ The formulas above were based on data collected from tests using the following s
 
 **For Memory usage based on the number of Pods and Services:**
 
-The following Kubernetes end-to-end tests (e2e):
+The following Kubernetes end-to-end presubmit tests (e2e):
 
 * pull-kubernetes-e2e-gce-big-performance: A 500 node cluster with 15000 Pods, 820 Services
 * pull-kubernetes-e2e-gce-large-performance: A 2000 node cluster with 60000 Pods, 3280 Services
 * pull-kubernetes-e2e-gce-scale-performance: A 5000 node cluster with 150000 Pods, 8200 Services
 
-These tests do not perform any QPS load, so cache and operating buffers were tested separately under load
+Version Info:
+* Kubernetes version: 1.12-ish. These tests were running a version of Kubernetes built by the pre-submit tests in PRs to master on the tail end of the 1.12 release cycle.
+* CoreDNS: 1.2.4 and 1.2.5
+
+These pre-submit tests do not perform any QPS load, so cache and operating buffers were tested separately under load
 and added to the max memory usage of each test to approximate real world memory usages.
 The memory formulas above are based on a best fit linear trend of the following data points.
 
@@ -103,6 +107,8 @@ The memory formulas above are based on a best fit linear trend of the following 
    * Master: n1-standard-1 (1 vCPU, 3.75 GB memory)
    * Nodes: n1-standard-2 (2 vCPUs, 7.5 GB memory)
    * Networking: kubenet
+   * Kubernetes Version: 1.13.0-alpha.2 (+3abb9f0ad7fd27)
+   * CoreDNS Version: 1.2.5
 * Test Client: Tests were executed using the scripts in `kubernetes/perf-tests/dns`, which use `dnsperf` under the hood.
 
 
