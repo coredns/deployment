@@ -18,14 +18,7 @@ This document aims to maintain a collection of the most frequently asked questio
 It is important to check whether the Kubernetes Network is stable before starting to troubleshoot DNS. It may appear like DNS isn't functioning when there is a network issue in the Kubernetes cluster. 
 In other words, an issue like "DNS does not work properly" has often its root cause as "Network is not working properly".
 
-Hence, iff you're confident that the network is stable and DNS still doesn't work, this FAQ document is applicable. 
-
-**Some of the Known network issues in Kubernetes installations are:**
-
-- Kubernetes is managing IP Tables. It may not be compatible with other firewall tool provided by the OS.
-- Firewalld is running on the node
-- Systemd running on the node
-- Others: [Fresh deploy with CoreDNS not resolving any dns lookup](https://github.com/kubernetes/kubeadm/issues/1056)
+Hence, if you're confident that the network is stable and DNS still doesn't work, this FAQ document is applicable. 
 
 ## Known Issues
 
