@@ -27,13 +27,13 @@ Hence, if you're confident that the network is stable and DNS still doesn't work
 In CoreDNS v1.2.2 that is provided with K8s v1.12, after editing the ConfigMap,
 CoreDNS will automatically "reload" its configuration file.
 
-he reload causes some metrics on the Prometheus interface to be missing.
+The reload causes some metrics on the Prometheus interface to be missing.
 
 ## Frequently Asked Questions
 
 #### FAQ-1 : Why am I unable to get an answer to the DNS queries when I'm using ```busybox``` to test?
 
-Busybox has a [known bug](https://github.com/docker-library/busybox/issues/48) and therefore does not work while using for testing DNS queries in Kubernetes.
+Busybox has a [known bug](https://github.com/docker-library/busybox/issues/48) and therefore does not work for testing DNS queries in Kubernetes.
 The workaround for this is to ensure that the image of Busybox is lower or equal to 1.28.4
 See: [dns can't resolve kubernetes.default and/or cluster.local](https://github.com/kubernetes/kubernetes/issues/66924#issuecomment-411804435) for more details.
 
@@ -46,7 +46,7 @@ Autopath requires  that the option `pods verified` is set in Kubernetes's plugin
 There are two definite ways to test this: 
 
 - Run a pod with Busybox, as described in [Debugging DNS Resolution](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
-- Run a DNS tools dedication pod using the following command:
+- Run a DNS tools dedicated pod using the following command:
 
 ```
 kubectl run -it --rm --restart=Never --image=infoblox/dnstools:latest dnstools
@@ -77,7 +77,7 @@ Warning, although this command is correct, it may not work because of ongoing is
 When installing a Kubernetes cluster on Ubuntu, when the /etc/resolv.conf file contains a localhost resolver, there are chances that CoreDNS is stuck in a loop. 
 This will be detected by the `loop` plugin and will show in the logs.
 
-If the logs show that there is a loop detected and the /etc/resolv.conf file contains, eg. 127.0.0.53 or similar, ensure to cleanup your /etc/resolv.conf. 
+If the logs show that there is a loop detected and the /etc/resolv.conf file contains, eg. 127.0.0.53 or similar, you need to cleanup your /etc/resolv.conf. 
 For more details, checkout the [documentation on loop detection](https://github.com/coredns/coredns/tree/master/plugin/loop#troubleshooting)
 
 This issue should not happen on a Kubernetes cluster created with kubeadm with a version 1.11 or higher.
