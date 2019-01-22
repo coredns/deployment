@@ -61,7 +61,7 @@ data:
           fallthrough in-addr.arpa ip6.arpa
         }FEDERATIONS
         prometheus :9153
-        proxy . UPSTREAMNAMESERVER
+        forward . UPSTREAMNAMESERVER
         cache 30
         loop
         reload
