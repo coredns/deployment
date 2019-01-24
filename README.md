@@ -10,7 +10,7 @@ To install:
   - Run `brew tap "coredns/deployment" "https://github.com/coredns/deployment"`
   - Run `brew install coredns`
   - Run `sudo brew services start coredns`
-  - test with `dig google.com @127.0.0.1` and you should see  `SERVER: 127.0.0.1#53(127.0.0.1)`
+  - Test with `dig google.com @127.0.0.1` and you should see  `SERVER: 127.0.0.1#53(127.0.0.1)`
 
 Using CoreDNS as your default resolver:
  - Open Network Preferences
