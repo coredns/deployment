@@ -20,15 +20,6 @@ In other words, an issue like "DNS does not work properly" has often its root ca
 
 Hence, if you're confident that the network is stable and DNS still doesn't work, this FAQ document is applicable. 
 
-## Known Issues
-
-### Some Prometheus data is missing after reload
-
-In CoreDNS v1.2.2 that is provided with K8s v1.12, after editing the ConfigMap, CoreDNS will automatically "reload" its configuration file.
-The reload causes some metrics on the Prometheus interface to be missing.
-
-This has been fixed in CoreDNS v1.2.3.
-
 ## Frequently Asked Questions
 
 #### FAQ-1 : Why am I unable to get an answer to the DNS queries when I'm using ```busybox``` to test?
