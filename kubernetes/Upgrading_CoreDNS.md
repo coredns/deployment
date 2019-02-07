@@ -44,7 +44,7 @@ The CoreDNS Deployments included with kubeadm 1.13 and earlier are not set up to
 
 In this walkthrough, the initial version is CoreDNS 1.0.6, which supports the `startup` plugin, and I am upgrading to 1.1.0, which no longer supports the plugin.
 
-First let’s look at the release notes for 1.1.0 (https://coredns.io/2018/03/12/coredns-1.1.0-release/). Theis notes include the following:
+First let’s look at the release notes for 1.1.0 (https://coredns.io/2018/03/12/coredns-1.1.0-release/). Their notes include the following:
 
 > * The plugins `shutdown` and `startup` where marked deprecated in 1.0.6. This release removes them. You should use `on` instead.
 
