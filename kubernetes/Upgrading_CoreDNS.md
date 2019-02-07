@@ -6,9 +6,7 @@ When upgrading a Kubernetes cluster, some care should be taken when upgrading th
 
 ## Identifying Backward Incompatibilities and Deprecations
 
-If you are upgrading CoreDNS as part of a Kubernetes upgrade, backward incompatibilities should be noted in the Kubernetes release notes of each version. You may also review the CoreDNS release notes as described below.
-
-If you are upgrading CoreDNS independently (not part of a  Kubernetes upgrade), then you'll need to review the CoreDNS release notes.  CoreDNS Release Notes are located in the [CoreDNS blog](https://coredns.io/blog/). The CoreDNS deprecation policy is such that we will only introduce backward incompatibilities in x.x.0 and x.x.1 releases.  So, for example, if you are upgrading from 1.1.5, to 1.3.1, you should check release notes for 1.2.0, 1.2.1, 1.3.0, and 1.3.1 for any deprecation/backward incompatibility notices.
+To identify possible backward incompatibilities, you'll need to review the CoreDNS release notes.  CoreDNS Release Notes are located in the [CoreDNS blog](https://coredns.io/blog/). The CoreDNS deprecation policy is such that we will only introduce backward incompatibilities in x.x.0 and x.x.1 releases.  So, for example, if you are upgrading from 1.1.5, to 1.3.1, you should check release notes for 1.2.0, 1.2.1, 1.3.0, and 1.3.1 for any deprecation/backward incompatibility notices.
 
 If you’ve discovered any backward incompatibility notices, you should review your Corefile to see if you are affected.
 
