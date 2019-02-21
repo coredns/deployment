@@ -11,13 +11,10 @@ To identify possible backward incompatibilities, you'll need to review the CoreD
 If you’ve discovered any backward incompatibility notices, you should review your Corefile to see if you are affected.
 
 
-## Upgrading CoreDNS Manually with a Rolling Update
-
-The CoreDNS Deployment can be configured to employ a rolling update strategy.  A rolling update strategy reduces service down time by ensuring that a subset of Pods are always ready.  To upgrade CoreDNS with a rolling update,   
-
+## Upgrading CoreDNS Manually
 
 1. Identify and resolve any configurations in your Corefile that are backward incompatible with the new CoreDNS version before upgrading.
-2. Ensure that your CoreDNS Deployment is set up to handle rolling updates. It should have > 1 replica, a RollingUpdate strategy, and a readiness probe defined that points to the `health` plugin in CoreDNS. e.g. …
+2. If you want to reduce the risk of CoreDNS downtime, ensure that your CoreDNS Deployment is set up to handle rolling updates. It should have > 1 replica, a RollingUpdate strategy, and a readiness probe defined that points to the `health` plugin in CoreDNS. e.g. …
 ```
         readinessProbe:
           httpGet:
@@ -35,10 +32,8 @@ The CoreDNS Deployment can be configured to employ a rolling update strategy.  A
 
 Kubeadm will update CoreDNS for you as part of a Kubernetes cluster upgrade.  In doing so, it will replace/reset any custom changes to your CoreDNS Deployment.  For example, if you have increased the number of replicas in your deployment, after an upgrade it will be reset back to the default (2). Kubeadm will not however change your CoreDNS Configmap.  If your CoreDNS Corefile contains any backward incompatible configurations, you’ll want to fix them manually before updating.
 
-The CoreDNS Deployments included with kubeadm 1.13 and earlier are not set up to do rolling updates, so it’s important to fix any backward incompatibilities before updating to 1.13 or earlier. For upgrades to 1.14 and later, the Deployment should be set up to do rolling updates.
 
-
-## Walkthrough - Manual Rolling Update of CoreDNS
+## Walkthrough - Manual Update of CoreDNS
 
 In this walkthrough, the initial version is CoreDNS 1.0.6, which supports the `startup` plugin, and I am upgrading to 1.1.0, which no longer supports the plugin.
 
