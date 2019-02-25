@@ -8,12 +8,15 @@ show_help () {
 cat << USAGE
 usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ]
 
-    -r : Define a reverse zone for the given CIDR. You may specifcy this option more
+    -r : Define a reverse zone for the given CIDR. You may specify this option more
          than once to add multiple reverse zones. If no reverse CIDRs are defined,
-         then the default is to handle all reverse zones (i.e. in-addr.arpa and ip6.arpa)
-    -i : Specify the cluster DNS IP address. If not specificed, the IP address of
+         then the default is to not handle any reverse zones in k8s.
+         If "all" is specified, then the default is to handle all reverse lookups (i.e. in-addr.arpa and ip6.arpa).
+         Please note that the "all" option routes all reverse lookups through K8s, and thus is inefficient for
+         reverse lookups of upstream IPs.
+    -i : Specify the cluster DNS IP address. If not specified, the IP address of
          the existing "kube-dns" service is used, if present.
-    -s : Skips the translation of kube-dns configmap to the corresponding CoreDNS Corefile configuration.
+    -s : Skips the translation of kube-dns Configmap to the corresponding CoreDNS Corefile configuration.
 
 USAGE
 exit 0
@@ -26,7 +29,7 @@ YAML_TEMPLATE="$DIR/coredns.yaml.sed"
 STUBDOMAINS=""
 UPSTREAM=\\/etc\\/resolv\.conf
 FEDERATIONS=""
-
+FALLTHROUGH=""
 
 # Translates the kube-dns ConfigMap to equivalent CoreDNS Configuration.
 function translate-kube-dns-configmap {
@@ -107,9 +110,11 @@ while getopts "hsr:i:d:t:k:" opt; do
 done
 
 # Conditional Defaults
-if [[ -z $REVERSE_CIDRS ]]; then
-  REVERSE_CIDRS="in-addr.arpa ip6.arpa"
+if [[ $REVERSE_CIDRS == *"all"* ]]; then
+    REVERSE_CIDRS="in-addr.arpa ip6.arpa"
+    FALLTHROUGH="fallthrough in-addr.arpa ip6.arpa"
 fi
+
 if [[ -z $CLUSTER_DNS_IP ]]; then
   # Default IP to kube-dns IP
   CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
@@ -128,6 +133,7 @@ replace=$'\\\n'
 sed -e "s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g" \
     -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" \
     -e "s?REVERSE_CIDRS?$REVERSE_CIDRS?g" \
+    -e "s?FALLTHROUGH?$FALLTHROUGH?g" \
     -e "s@STUBDOMAINS@${STUBDOMAINS//$orig/$replace}@g" \
     -e "s@FEDERATIONS@${FEDERATIONS//$orig/$replace}@g" \
     -e "s/UPSTREAMNAMESERVER/$UPSTREAM/g" \

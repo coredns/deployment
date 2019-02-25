@@ -58,7 +58,7 @@ data:
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
           upstream
-          fallthrough in-addr.arpa ip6.arpa
+          FALLTHROUGH
         }FEDERATIONS
         prometheus :9153
         forward . UPSTREAMNAMESERVER
