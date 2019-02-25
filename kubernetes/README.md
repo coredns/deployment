@@ -26,7 +26,7 @@ You should examine the manifest carefully and make sure it is correct for your p
 cluster. Depending on how you have built your cluster and the version you are running,
 some modifications to the manifest may be needed.
 
-In the best case scenario, all that's needed to replace Kube-DNS are these commands:
+A simple example to replace kube-dns:
 
 ~~~
 $ ./deploy.sh | kubectl apply -f -
@@ -34,6 +34,7 @@ $ kubectl delete --namespace=kube-system deployment kube-dns
 ~~~
 
 **NOTE:** You will need to delete the kube-dns deployment (as above) since while CoreDNS and kube-dns are running at the same time, queries may randomly hit either one.
+**NOTE:** The above example will not handle any reverse zones.  To handle reverse zones use the `-r` option.
 
 For non-RBAC deployments, you'll need to edit the resulting yaml before applying it:
 1. Remove the line `serviceAccountName: coredns` from the `Deployment` section.
