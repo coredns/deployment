@@ -4,9 +4,9 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 ## Proposed functions:
 
-`Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of deprecated plugins or directives present in the Corefile.
+`Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of deprecated plugins or directives present in the Corefile. Each string returned is a warning, e.g. "plugin 'foo' is deprecated." An empty list returned means there are no deprecated plugins/options present in the Corefile.
 
-`Removed(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of removed plugins or directives present in the Corefile.
+`Removed(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of removed plugins or directives present in the Corefile. Each string returned is a warning, e.g. "plugin 'foo' is no longer supported." An empty list returned means there are no removed plugins/options present in the Corefile.
 
 `Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefile string, deprecations boolean) (string, error)`: returns an automatically migrated version of the Corefile, or an error if it cannot. It should:
   * replace/convert any plugins/directives that have replacements (e.g. _proxy_ -> _forward_)
@@ -14,7 +14,7 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
   * remove plugins/directives that do not have replacements (e.g. kubernetes `upstream`)
   * if _deprecations_ is set to true, also migrate deprecated plugins/directives.
 
-`Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of plugins that are not recognized/supported by the migration tool.  We must handle all the default plugins, and we should make an effort to handle the most common non-default plugins. 
+`Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).  We must handle all the default plugins, and we should make an effort to handle the most common non-default plugins. Each string returned is a warning, e.g. "plugin 'foo' is not supported by the migration tool." An empty list returned means there are no unsupported plugins/options present in the Corefile.
 
 Although it would be useful, we cannot for example provide a function `Default(coreDNSVersion, corefile string) boolean` that returns  `true` if the corefile is the default for a that version, because each management tool may deploy their own defaults.  So detection of default Corefiles must be implemented by each management tool that requires it.
 
