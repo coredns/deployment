@@ -21,7 +21,7 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 `CheckCorefile(coreDNSVersion, corefile string) bool`: returns true if the configuration is valid for the given version.  This is intended as a sanity checks to make sure a Corefile can be loaded by CoreDNS, e.g. by calling `setup()` for each plugin used.  This won't work for custom compilations CoreDNS - e.g. one compiled with external plugins are used.
 
-`Released(dockerImageID string) bool`: returns `true` if `dockerImageID` matches any _released_ image of CoreDNS.
+`Released(dockerImageID string) bool`: returns `true` if `dockerImageID` matches any _released_ image of CoreDNS. This includes all released verisons of CoreDNS, not just those associted with Kubernetes releases. 
 
 
 ## Command Line Converter
