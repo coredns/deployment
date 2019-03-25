@@ -19,6 +19,11 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 `Default(fromK8sVersion, corefile string) boolean`: returns `true` if the Corefile is the default for a that version of Kubernetes.  If `fromK8sVersion` is omitted, returns `true` if the Corefile is the default for any version.  Some degree of safe fuzzy matching should be employed here to accept custom cluster domain names and IP addresses, as well as white space.
 
+`CheckCorefile(coreDNSVersion, corefile string) error`: returns true if the configuration is valid for the given version.  This is intended as a sanity checks to make sure a Corefile can be loaded by CoreDNS, e.g. by calling `setup()` for each plugin used.  This won't work for custom compilations CoreDNS - e.g. one compiled with external plugins are used.
+
+`Released(dockerImageID string) bool`: returns `true` if `dockerImageID` matches any _released_ image of CoreDNS.
+
+
 ## Command Line Converter
 
 We should also write a simple command line tool that allows someone to use these functions via the command line.
@@ -42,5 +47,6 @@ This is an example of how these tools could be used by an installer/upgrader...
 2. Check `Unsupported()`, if anything is unsupported, abort and warn user (allow user to override to pass this).
 3. Call `Migrate()`, if there is an error, abort and warn user.
 4. If there is no error, pause and ask user if they want to continue with the migration.  If the starting Corefile was at defaults, proceed use the migrated corefile.
+
 
 
