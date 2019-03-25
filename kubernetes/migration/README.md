@@ -23,6 +23,8 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 `Released(dockerImageID string) bool`: returns `true` if `dockerImageID` matches any _released_ image of CoreDNS. This includes all released verisons of CoreDNS, not just those associted with Kubernetes releases. 
 
+Globally, `toCoreDNSVersion` must always be higher than `fromCoreDNSVersion`.  Supporting downward migrations may be possible, but I don't think necessary to support at this time, so we should expressly forbid downward migrations for now.  That said, if a Corefile is at default then a downgrade is very easy (since no migration is required). It's up to the K8s installer to decide if they want to support that.
+
 
 ## Command Line Converter
 
