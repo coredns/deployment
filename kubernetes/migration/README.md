@@ -17,9 +17,9 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 `Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).  We must handle all the default plugins, and we should make an effort to handle the most common non-default plugins. Each string returned is a warning, e.g. "plugin 'foo' is not supported by the migration tool." An empty list returned means there are no unsupported plugins/options present in the Corefile.
 
-`Default(fromK8sVersion, corefile string) boolean`: returns `true` if the Corefile is the default for a that version of Kubernetes.  If `fromK8sVersion` is omitted, returns `true` if the Corefile is the default for any version.  Some degree of safe fuzzy matching should be employed here to accept custom cluster domain names and IP addresses, as well as white space.
+`Default(fromK8sVersion, corefile string) bool`: returns `true` if the Corefile is the default for a that version of Kubernetes.  If `fromK8sVersion` is omitted, returns `true` if the Corefile is the default for any version.  Some degree of safe fuzzy matching should be employed here to accept custom cluster domain names and IP addresses, as well as white space.
 
-`CheckCorefile(coreDNSVersion, corefile string) error`: returns true if the configuration is valid for the given version.  This is intended as a sanity checks to make sure a Corefile can be loaded by CoreDNS, e.g. by calling `setup()` for each plugin used.  This won't work for custom compilations CoreDNS - e.g. one compiled with external plugins are used.
+`CheckCorefile(coreDNSVersion, corefile string) bool`: returns true if the configuration is valid for the given version.  This is intended as a sanity checks to make sure a Corefile can be loaded by CoreDNS, e.g. by calling `setup()` for each plugin used.  This won't work for custom compilations CoreDNS - e.g. one compiled with external plugins are used.
 
 `Released(dockerImageID string) bool`: returns `true` if `dockerImageID` matches any _released_ image of CoreDNS.
 
