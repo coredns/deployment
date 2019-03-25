@@ -17,7 +17,7 @@ This Go library provides a set of functions to help handle migrations of CoreDNS
 
 `Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefile string) []string`: returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).  We must handle all the default plugins, and we should make an effort to handle the most common non-default plugins. Each string returned is a warning, e.g. "plugin 'foo' is not supported by the migration tool." An empty list returned means there are no unsupported plugins/options present in the Corefile.
 
-Although it would be useful, we cannot for example provide a function `Default(coreDNSVersion, corefile string) boolean` that returns  `true` if the corefile is the default for a that version, because each management tool may deploy their own defaults.  So detection of default Corefiles must be implemented by each management tool that requires it.
+`Default(fromK8sVersion, corefile string) boolean`: returns `true` if the Corefile is the default for a that version of Kubernetes.  If `fromK8sVersion` is omitted, returns `true` if the Corefile is the default for any version.  Some degree of safe fuzzy matching should be employed here to accept custom cluster domain names and IP addresses, as well as white space.
 
 ## Command Line Converter
 
@@ -37,9 +37,10 @@ Usage:
 
 This is an example of how these tools could be used by an installer/upgrader... 
 
-1. check Deprecated(), if anything is deprecated, warn user, but continue install. 
-2. check Unsupported(), if anything is unsupported, abort and warn user (allow user to override to pass this).
-3. call Migrate(), if there is an error, abort and warn user.
-4. If there is no error, and the starting Corefile was not a default, pause and ask user if they want to continue with the migration.  If the starting Corefile was at defaults, proceed use the migrated corefile.
+0. Check `Default()`, if the Corefile is a default, simply re-deploy the new default over top the old one. No migration needed. If the Corefile is not a default, continue...
+1. Check `Deprecated()`, if anything is deprecated, warn user, but continue install. 
+2. Check `Unsupported()`, if anything is unsupported, abort and warn user (allow user to override to pass this).
+3. Call `Migrate()`, if there is an error, abort and warn user.
+4. If there is no error, pause and ask user if they want to continue with the migration.  If the starting Corefile was at defaults, proceed use the migrated corefile.
 
 
