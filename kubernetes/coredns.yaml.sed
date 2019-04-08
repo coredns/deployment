@@ -112,6 +112,8 @@ spec:
         - name: config-volume
           mountPath: /etc/coredns
           readOnly: true
+        - name: tmp
+          mountPath: /tmp
         ports:
         - containerPort: 53
           name: dns
@@ -146,6 +148,8 @@ spec:
             scheme: HTTP
       dnsPolicy: Default
       volumes:
+        - name: tmp
+          emptyDir: {}
         - name: config-volume
           configMap:
             name: coredns
