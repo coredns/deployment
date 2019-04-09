@@ -63,7 +63,7 @@ var Versions = map[string]release{
 						action: removeOption,
 					},
 					"endpoint": {
-						status: deprecated,
+						status: ignored,
 						action: removeExtraEndpoints,
 					},
 					"tls":                {},
@@ -124,7 +124,7 @@ var Versions = map[string]release{
 				options: map[string]option{
 					"resyncperiod": {},
 					"endpoint": {
-						status: deprecated,
+						status: ignored,
 						action: removeExtraEndpoints,
 					},
 					"tls":                {},
