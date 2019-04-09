@@ -6,10 +6,10 @@ import (
 
 func TestMigrate(t *testing.T) {
 	startCorefile := `.:53 {
-    #mycomment
     errors
     health
     kubernetes cluster.local in-addr.arpa ip6.arpa {
+        endpoint thing1 thing2
         pods insecure
         upstream
         fallthrough in-addr.arpa ip6.arpa
@@ -27,6 +27,7 @@ func TestMigrate(t *testing.T) {
     errors
     health
     kubernetes cluster.local in-addr.arpa ip6.arpa {
+        endpoint thing1
         pods insecure
         fallthrough in-addr.arpa ip6.arpa
     }
