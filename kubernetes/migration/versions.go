@@ -63,7 +63,7 @@ var Versions = map[string]release{
 						action: removeOption,
 					},
 					"endpoint": {
-						status: deprecated,
+						status: ignored,
 						action: removeExtraEndpoints,
 					},
 					"tls":                {},
@@ -72,6 +72,10 @@ var Versions = map[string]release{
 					"labels":             {},
 					"pods":               {},
 					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
 					"ttl":                {},
 					"noendpoints":        {},
 					"transfer":           {},
@@ -120,7 +124,7 @@ var Versions = map[string]release{
 				options: map[string]option{
 					"resyncperiod": {},
 					"endpoint": {
-						status: deprecated,
+						status: ignored,
 						action: removeExtraEndpoints,
 					},
 					"tls":                {},
