@@ -22,7 +22,7 @@ func (n *Notice) ToString() string {
 	if n.Severity == unsupported {
 		s += "is unsupported by this migration tool in " + n.Version + "."
 	} else {
-		s += "was " + n.Severity + " in " + n.Version + "."
+		s += "is " + n.Severity + " in " + n.Version + "."
 	}
 	if n.ReplacedBy != "" {
 		s += fmt.Sprintf(` It is replaced by "%v".`, n.ReplacedBy)
@@ -34,7 +34,8 @@ func (n *Notice) ToString() string {
 }
 
 const (
-	deprecated  = "deprecated"  // plugin/option is deprecated
-	removed     = "removed"     // plugin/option has been removed
+	deprecated  = "deprecated"  // plugin/option is deprecated in CoreDNS
+	ignored     = "ignored"     // plugin/option is ignored by CoreDNS
+	removed     = "removed"     // plugin/option has been removed from CoreDNS
 	unsupported = "unsupported" // plugin/option is not supported by the migration tool
 )

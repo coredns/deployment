@@ -72,6 +72,10 @@ var Versions = map[string]release{
 					"labels":             {},
 					"pods":               {},
 					"endpoint_pod_names": {},
+					"upstream": {
+						status: ignored,
+						action: removeOption,
+					},
 					"ttl":                {},
 					"noendpoints":        {},
 					"transfer":           {},
