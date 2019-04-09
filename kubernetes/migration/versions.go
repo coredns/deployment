@@ -62,7 +62,10 @@ var Versions = map[string]release{
 						status: deprecated,
 						action: removeOption,
 					},
-					"endpoint":           {},
+					"endpoint": {
+						status: deprecated,
+						action: removeExtraEndpoints,
+					},
 					"tls":                {},
 					"kubeconfig":         {},
 					"namespaces":         {},
@@ -115,8 +118,11 @@ var Versions = map[string]release{
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {}, // TODO: Multiple endpoint deprecation
+					"resyncperiod": {},
+					"endpoint": {
+						status: deprecated,
+						action: removeExtraEndpoints,
+					},
 					"tls":                {},
 					"kubeconfig":         {},
 					"namespaces":         {},
@@ -189,8 +195,11 @@ var Versions = map[string]release{
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {}, // TODO: Multiple endpoint deprecation
+					"resyncperiod": {},
+					"endpoint": {
+						status: deprecated,
+						action: removeExtraEndpoints,
+					},
 					"tls":                {},
 					"kubeconfig":         {},
 					"namespaces":         {},
@@ -255,4 +264,14 @@ var proxyToForwardOptionsMigrations = map[string]option{
 	},
 }
 
-var proxyToForwardPluginAction = func(p *corefile.Plugin) (*corefile.Plugin, error) { return renamePlugin(p, "forward") }
+var proxyToForwardPluginAction = func(p *corefile.Plugin) (*corefile.Plugin, error) {
+	return renamePlugin(p, "forward")
+}
+
+var removeExtraEndpoints = func(o *corefile.Option) (*corefile.Option, error) {
+	if len(o.Args) > 1 {
+		o.Args = o.Args[:1]
+		return o, nil
+	}
+	return nil, nil
+}
