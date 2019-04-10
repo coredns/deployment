@@ -64,7 +64,7 @@ var Versions = map[string]release{
 					},
 					"endpoint": {
 						status: ignored,
-						action: removeExtraEndpoints,
+						action: useFirstArgumentOnly,
 					},
 					"tls":                {},
 					"kubeconfig":         {},
@@ -125,7 +125,7 @@ var Versions = map[string]release{
 					"resyncperiod": {},
 					"endpoint": {
 						status: ignored,
-						action: removeExtraEndpoints,
+						action: useFirstArgumentOnly,
 					},
 					"tls":                {},
 					"kubeconfig":         {},
@@ -202,7 +202,7 @@ var Versions = map[string]release{
 					"resyncperiod": {},
 					"endpoint": {
 						status: deprecated,
-						action: removeExtraEndpoints,
+						action: useFirstArgumentOnly,
 					},
 					"tls":                {},
 					"kubeconfig":         {},
@@ -272,10 +272,10 @@ var proxyToForwardPluginAction = func(p *corefile.Plugin) (*corefile.Plugin, err
 	return renamePlugin(p, "forward")
 }
 
-var removeExtraEndpoints = func(o *corefile.Option) (*corefile.Option, error) {
-	if len(o.Args) > 1 {
-		o.Args = o.Args[:1]
+var useFirstArgumentOnly = func(o *corefile.Option) (*corefile.Option, error) {
+	if len(o.Args) < 1 {
 		return o, nil
 	}
-	return nil, nil
+	o.Args = o.Args[:1]
+	return o, nil
 }
