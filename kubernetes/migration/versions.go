@@ -464,8 +464,53 @@ var Versions = map[string]release{
 			"loadbalance": {},
 		},
 	},
-	"1.2.2": {
+	"1.2.3": {
 		nextVersion:   "1.2.4",
+		dockerImageID: "d46263e07d7a",
+		plugins: map[string]plugin{
+			"errors": {},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod":       {},
+					"endpoint":           {},
+					"tls":                {},
+					"kubeconfig":         {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream":           {},
+					"ttl":                {},
+					"noendpoints":        {},
+					"transfer":           {},
+					"fallthrough":        {},
+					"ignore":             {},
+				},
+			},
+			"prometheus": {},
+			"proxy":      {},
+			"forward":    {},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
+	"1.2.2": {
+		nextVersion:   "1.2.3",
 		k8sRelease:    "1.12",
 		dockerImageID: "367cdc8433a4",
 		defaultConf: `.:53 {
@@ -522,6 +567,192 @@ var Versions = map[string]release{
 			"loop":        {},
 			"reload":      {},
 			"loadbalance": {},
+		},
+	},
+	"1.2.1": {
+		nextVersion:   "1.2.2",
+		dockerImageID: "a575d86d4058",
+		plugins: map[string]plugin{
+			"errors": {},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod":       {},
+					"endpoint":           {},
+					"tls":                {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream":           {},
+					"ttl":                {},
+					"noendpoints":        {},
+					"transfer":           {},
+					"fallthrough":        {},
+					"ignore":             {},
+				},
+			},
+			"prometheus": {},
+			"proxy":      {},
+			"forward":    {},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"loop":        {},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
+	"1.2.0": {
+		nextVersion:   "1.2.1",
+		dockerImageID: "da1adafc0e78",
+		plugins: map[string]plugin{
+			"errors": {},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod":       {},
+					"endpoint":           {},
+					"tls":                {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream":           {},
+					"ttl":                {},
+					"noendpoints":        {},
+					"transfer":           {},
+					"fallthrough":        {},
+					"ignore":             {},
+				},
+			},
+			"prometheus": {},
+			"proxy":      {},
+			"forward":    {},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
+	"1.1.4": {
+		nextVersion:   "1.2.0",
+		dockerImageID: "9919f8566026",
+		plugins: map[string]plugin{
+			"errors": {},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod":       {},
+					"endpoint":           {},
+					"tls":                {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream":           {},
+					"ttl":                {},
+					"noendpoints":        {},
+					"transfer":           {},
+					"fallthrough":        {},
+					"ignore":             {},
+				},
+			},
+			"prometheus": {},
+			"proxy":      {},
+			"forward":    {},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"reload":      {},
+			"loadbalance": {},
+		},
+	},
+	"1.1.3": {
+		nextVersion:   "1.1.4",
+		k8sRelease:    "1.11",
+		dockerImageID: "b3b94275d97c",
+		defaultConf: `.:53 {
+    errors
+    health
+    kubernetes * *** {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . *
+    cache 30
+    reload
+}`,
+		plugins: map[string]plugin{
+			"errors": {},
+			"log": {
+				options: map[string]option{
+					"class": {},
+				},
+			},
+			"health":   {},
+			"autopath": {},
+			"kubernetes": {
+				options: map[string]option{
+					"resyncperiod":       {},
+					"endpoint":           {},
+					"tls":                {},
+					"namespaces":         {},
+					"labels":             {},
+					"pods":               {},
+					"endpoint_pod_names": {},
+					"upstream":           {},
+					"ttl":                {},
+					"noendpoints":        {},
+					"transfer":           {},
+					"fallthrough":        {},
+					"ignore":             {},
+				},
+			},
+			"prometheus": {},
+			"proxy":      {},
+			"forward":    {},
+			"cache": {
+				options: map[string]option{
+					"success":  {},
+					"denial":   {},
+					"prefetch": {},
+				},
+			},
+			"reload": {},
 		},
 	},
 }
