@@ -2,8 +2,6 @@
 
 # Roll back kube-dns to the cluster which has CoreDNS installed.
 
-set -eo pipefail
-
 show_help () {
 cat << USAGE
 usage: $0  [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ]
