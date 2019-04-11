@@ -229,3 +229,10 @@ func Released(dockerImageID string) bool {
 	}
 	return false
 }
+
+// CheckCorefile returns true if the configuration is valid.  This is intended as a sanity checks to make sure a
+// Corefile can be loaded by CoreDNS, e.g. by calling `setup()` for each plugin used.  This will only work for the
+// version of CoreDNS that is imported at compile time.
+func CheckCorefile(corefileStr string) (bool) {
+	return false
+}
