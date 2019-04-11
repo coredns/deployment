@@ -715,46 +715,7 @@ var Versions = map[string]release{
     proxy . *
     cache 30
     reload
-}`,
-		plugins: map[string]plugin{
-			"errors": {},
-			"log": {
-				options: map[string]option{
-					"class": {},
-				},
-			},
-			"health":   {},
-			"autopath": {},
-			"kubernetes": {
-				options: map[string]option{
-					"resyncperiod":       {},
-					"endpoint":           {},
-					"tls":                {},
-					"namespaces":         {},
-					"labels":             {},
-					"pods":               {},
-					"endpoint_pod_names": {},
-					"upstream":           {},
-					"ttl":                {},
-					"noendpoints":        {},
-					"transfer":           {},
-					"fallthrough":        {},
-					"ignore":             {},
-				},
-			},
-			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
-			"cache": {
-				options: map[string]option{
-					"success":  {},
-					"denial":   {},
-					"prefetch": {},
-				},
-			},
-			"reload": {},
-		},
-	},
+}`},
 }
 
 var proxyToForwardOptionsMigrations = map[string]option{
