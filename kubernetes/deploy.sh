@@ -2,8 +2,6 @@
 
 # Deploys CoreDNS to a cluster currently running Kube-DNS.
 
-set -eo pipefail
-
 show_help () {
 cat << USAGE
 usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ]
