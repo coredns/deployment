@@ -1,10 +1,12 @@
 package migration
+
 // This package provides a set of functions to help handle migrations of CoreDNS Corefiles to be compatible with new
 // versions of CoreDNS. The task of upgrading CoreDNS is the responsibility of a variety of Kubernetes management tools
 // (e.g. kubeadm and others), and the precise behavior may be different for each one. This library abstracts some basic
 // helper functions that make this easier to implement.
 
 import (
+	"fmt"
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
 )
 
@@ -29,6 +31,10 @@ func Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]No
 
 func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string) ([]Notice, error) {
 	notices := []Notice{}
+	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
+	if err != nil {
+		return notices, err
+	}
 	cf, err := corefile.New(corefileStr)
 	if err != nil {
 		return notices, err
@@ -94,6 +100,10 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 
 // Migrate returns version of the Corefile migrated to toCoreDNSVersion, or an error if it cannot.
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
+	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
+	if err != nil {
+		return "", err
+	}
 	cf, err := corefile.New(corefileStr)
 	if err != nil {
 		return "", err
@@ -178,7 +188,7 @@ func Default(k8sVersion, corefileStr string) bool {
 	if err != nil {
 		return false
 	}
-	NextVersion:
+NextVersion:
 	for _, v := range Versions {
 		if k8sVersion != "" && k8sVersion != v.k8sRelease {
 			continue
@@ -229,3 +239,34 @@ func Released(dockerImageID string) bool {
 	}
 	return false
 }
+
+// ValidVersions returns a list of all versions defined
+func ValidVersions() []string {
+	var vStrs []string
+	for vStr, _ := range Versions {
+		vStrs = append(vStrs, vStr)
+	}
+	return vStrs
+}
+
+func validateVersion(fromCoreDNSVersion string) error {
+	if _, ok := Versions[fromCoreDNSVersion]; !ok {
+		return fmt.Errorf("start version '%v' not supported", fromCoreDNSVersion)
+	}
+	return nil
+}
+
+func validateVersions(fromCoreDNSVersion, toCoreDNSVersion string) error {
+	err := validateVersion(fromCoreDNSVersion)
+	if err != nil {
+		return err
+	}
+	for next := Versions[fromCoreDNSVersion].nextVersion; next != ""; next = Versions[next].nextVersion  {
+		if next != toCoreDNSVersion {
+			continue
+		}
+		return nil
+	}
+	return fmt.Errorf("cannot migrate to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
+}
+
