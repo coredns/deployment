@@ -101,7 +101,19 @@ var Versions = map[string]release{
 				action:     proxyToForwardPluginAction,
 				options:    proxyToForwardOptionsMigrations,
 			},
-			"forward": {},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -167,7 +179,19 @@ var Versions = map[string]release{
 				action:     proxyToForwardPluginAction,
 				options:    proxyToForwardOptionsMigrations,
 			},
-			"forward": {},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -240,8 +264,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -295,8 +344,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -360,8 +434,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -405,8 +504,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -450,8 +574,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -495,8 +644,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -555,8 +729,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -599,8 +798,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -643,8 +867,33 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: removed,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"prefer_udp":     {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -686,8 +935,32 @@ var Versions = map[string]release{
 				},
 			},
 			"prometheus": {},
-			"proxy":      {},
-			"forward":    {},
+			"proxy": {
+				options: map[string]option{
+					"policy":       {},
+					"fail_timeout": {},
+					"max_fails":    {},
+					"health_check": {},
+					"except":       {},
+					"spray":        {},
+					"protocol": {
+						status: ignored,
+						action: removeArgument,
+					},
+				},
+			},
+			"forward": {
+				options: map[string]option{
+					"except":         {},
+					"force_tcp":      {},
+					"expire":         {},
+					"max_fails":      {},
+					"tls":            {},
+					"tls_servername": {},
+					"policy":         {},
+					"health_check":   {},
+				},
+			},
 			"cache": {
 				options: map[string]option{
 					"success":  {},
@@ -754,5 +1027,12 @@ var useFirstArgumentOnly = func(o *corefile.Option) (*corefile.Option, error) {
 		return o, nil
 	}
 	o.Args = o.Args[:1]
+	return o, nil
+}
+
+var removeArgument = func(o *corefile.Option) (*corefile.Option, error) {
+	if o.Args[0] == "https_google" {
+		return nil, nil
+	}
 	return o, nil
 }
