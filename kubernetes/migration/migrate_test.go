@@ -241,7 +241,6 @@ stubzone.org:53 {
 }
 `}
 
-
 	for _, d := range defaultCorefiles {
 		if !Default("", d) {
 			t.Errorf("expected config to be identified as a default: %v", d)
@@ -250,6 +249,31 @@ stubzone.org:53 {
 	for _, d := range nonDefaultCorefiles {
 		if Default("", d) {
 			t.Errorf("expected config to NOT be identified as a default: %v", d)
+		}
+	}
+}
+
+func TestValidateVersions(t *testing.T) {
+	testCases := []struct {
+		from   string
+		to     string
+		shouldErr    bool
+	}{
+		{"1.3.1", "1.5.0", false},
+		{"1.5.0", "1.3.1", true},
+		{"banana", "1.5.0", true},
+		{"1.3.1", "apple", true},
+		{"banana", "apple", true},
+	}
+
+	for _, tc := range testCases {
+		err := validateVersions(tc.from, tc.to)
+
+		if !tc.shouldErr && err != nil {
+			t.Errorf("expected '%v' to '%v' to be valid versions.", tc.from, tc.to)
+		}
+		if tc.shouldErr && err == nil {
+			t.Errorf("expected '%v' to '%v' to be invalid versions.", tc.from, tc.to)
 		}
 	}
 }
