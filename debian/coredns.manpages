@@ -1,2 +1,3 @@
 debian/man/coredns.1
+debian/man/corefile.5
 debian/man/coredns-*.7
