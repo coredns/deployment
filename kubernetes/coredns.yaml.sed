@@ -55,9 +55,9 @@ data:
     .:53 {
         errors
         health
+        ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
-          upstream
           fallthrough in-addr.arpa ip6.arpa
         }FEDERATIONS
         prometheus :9153
@@ -99,7 +99,7 @@ spec:
         beta.kubernetes.io/os: linux
       containers:
       - name: coredns
-        image: coredns/coredns:1.3.1
+        image: coredns/coredns:1.5.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
@@ -143,8 +143,8 @@ spec:
           failureThreshold: 5
         readinessProbe:
           httpGet:
-            path: /health
-            port: 8080
+            path: /ready
+            port: 8181
             scheme: HTTP
       dnsPolicy: Default
       volumes:
