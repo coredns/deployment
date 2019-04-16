@@ -36,7 +36,7 @@ func TestMigrate(t *testing.T) {
 `,
 
 			fromVersion:  "1.1.3",
-			toVersion:    "1.1.4",
+			toVersion:    "1.2.6",
 			deprecations: true,
 
 			expectedCorefile: `.:53 {

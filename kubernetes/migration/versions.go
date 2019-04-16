@@ -45,6 +45,13 @@ func renamePlugin(p *corefile.Plugin, to string) (*corefile.Plugin, error) {
 	return p, nil
 }
 
+func removeArgument(o *corefile.Option, remove string) (*corefile.Option, error) {
+	if o.Args[0] == remove {
+		return nil, nil
+	}
+	return o, nil
+}
+
 var Versions = map[string]release{
 	"1.5.0": {
 		dockerImageID: "7987f0908caf",
@@ -272,10 +279,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -352,10 +356,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -442,10 +443,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -512,10 +510,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -582,10 +577,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -652,10 +644,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -737,10 +726,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -806,10 +792,7 @@ var Versions = map[string]release{
 					"health_check": {},
 					"except":       {},
 					"spray":        {},
-					"protocol": {
-						status: removed,
-						action: removeArgument,
-					},
+					"protocol":     {},
 				},
 			},
 			"forward": {
@@ -877,7 +860,7 @@ var Versions = map[string]release{
 					"spray":        {},
 					"protocol": {
 						status: removed,
-						action: removeArgument,
+						action: proxyProtocolOptionAction,
 					},
 				},
 			},
@@ -945,7 +928,7 @@ var Versions = map[string]release{
 					"spray":        {},
 					"protocol": {
 						status: ignored,
-						action: removeArgument,
+						action: proxyProtocolOptionAction,
 					},
 				},
 			},
@@ -1030,9 +1013,6 @@ var useFirstArgumentOnly = func(o *corefile.Option) (*corefile.Option, error) {
 	return o, nil
 }
 
-var removeArgument = func(o *corefile.Option) (*corefile.Option, error) {
-	if o.Args[0] == "https_google" {
-		return nil, nil
-	}
-	return o, nil
+var proxyProtocolOptionAction = func(o *corefile.Option) (*corefile.Option, error) {
+	return removeArgument(o, "https_google")
 }
