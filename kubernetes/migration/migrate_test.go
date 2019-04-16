@@ -5,7 +5,61 @@ import (
 )
 
 func TestMigrate(t *testing.T) {
-	startCorefile := `.:53 {
+	testCases := []struct {
+		name             string
+		fromVersion      string
+		toVersion        string
+		deprecations     bool
+		startCorefile    string
+		expectedCorefile string
+	}{
+		{
+			name: "Remove invalid proxy option",
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        endpoint thing1 thing2
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy example.org 1.2.3.4:53 {
+        protocol https_google
+    }
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+
+			fromVersion:  "1.1.3",
+			toVersion:    "1.2.6",
+			deprecations: true,
+
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        endpoint thing1 thing2
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy example.org 1.2.3.4:53
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		},
+		{
+			name: "Migrate from proxy to forward and handle Kubernetes deprecations",
+			startCorefile: `.:53 {
     errors
     health
     kubernetes cluster.local in-addr.arpa ip6.arpa {
@@ -21,9 +75,13 @@ func TestMigrate(t *testing.T) {
     reload
     loadbalance
 }
-`
+`,
 
-	expected := `.:53 {
+			fromVersion:  "1.3.1",
+			toVersion:    "1.5.0",
+			deprecations: true,
+
+			expectedCorefile: `.:53 {
     errors
     health
     kubernetes cluster.local in-addr.arpa ip6.arpa {
@@ -38,15 +96,23 @@ func TestMigrate(t *testing.T) {
     reload
     loadbalance
 }
-`
-	result, err := Migrate("1.3.1", "1.5.0", startCorefile, true)
-
-	if err != nil {
-		t.Errorf("%v", err)
+`,
+		},
 	}
 
-	if result != expected {
-		t.Errorf("expected %v; got %v", expected, result)
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+
+			result, err := Migrate(testCase.fromVersion, testCase.toVersion, testCase.startCorefile, testCase.deprecations)
+
+			if err != nil {
+				t.Errorf("%v", err)
+			}
+
+			if result != testCase.expectedCorefile {
+				t.Errorf("expected %v; got %v", testCase.expectedCorefile, result)
+			}
+		})
 	}
 }
 
@@ -255,9 +321,9 @@ stubzone.org:53 {
 
 func TestValidateVersions(t *testing.T) {
 	testCases := []struct {
-		from   string
-		to     string
-		shouldErr    bool
+		from      string
+		to        string
+		shouldErr bool
 	}{
 		{"1.3.1", "1.5.0", false},
 		{"1.5.0", "1.3.1", true},
