@@ -7,6 +7,8 @@ package migration
 
 import (
 	"fmt"
+	"sort"
+
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
 )
 
@@ -243,9 +245,10 @@ func Released(dockerImageID string) bool {
 // ValidVersions returns a list of all versions defined
 func ValidVersions() []string {
 	var vStrs []string
-	for vStr, _ := range Versions {
+	for vStr := range Versions {
 		vStrs = append(vStrs, vStr)
 	}
+	sort.Strings(vStrs)
 	return vStrs
 }
 
@@ -261,7 +264,7 @@ func validateVersions(fromCoreDNSVersion, toCoreDNSVersion string) error {
 	if err != nil {
 		return err
 	}
-	for next := Versions[fromCoreDNSVersion].nextVersion; next != ""; next = Versions[next].nextVersion  {
+	for next := Versions[fromCoreDNSVersion].nextVersion; next != ""; next = Versions[next].nextVersion {
 		if next != toCoreDNSVersion {
 			continue
 		}
