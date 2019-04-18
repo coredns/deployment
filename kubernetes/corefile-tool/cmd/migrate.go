@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// migrateCmd represents the migrate command
+// NewMigrateCmd represents the migrate command
 func NewMigrateCmd() *cobra.Command {
 	var migrateCmd = &cobra.Command{
 		Use:   "migrate",

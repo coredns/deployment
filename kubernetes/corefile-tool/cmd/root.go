@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command for the corefile-tool.
+// CorefileTool represents the base command for the corefile-tool.
 func CorefileTool() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "corefile-tool",

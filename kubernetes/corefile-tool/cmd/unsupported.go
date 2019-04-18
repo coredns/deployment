@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// unsupportedCmd represents the unsupported command
+// NewUnsupportedCmd represents the unsupported command
 func NewUnsupportedCmd() *cobra.Command {
 	unsupportedCmd := &cobra.Command{
 		Use:   "unsupported",
