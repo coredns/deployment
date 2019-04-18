@@ -9,10 +9,11 @@ import (
 )
 
 // rootCmd represents the base command for the corefile-tool.
-var rootCmd = &cobra.Command{
-	Use:   "corefile-tool",
-	Short: "A brief description of your application",
-	Long: dedent.Dedent(`
+func CorefileTool() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "corefile-tool",
+		Short: "A brief description of your application",
+		Long: dedent.Dedent(`
 
 			    ┌──────────────────────────────────────────────────────────┐
 			    │ CoreDNS Migration Tool                                   │
@@ -23,11 +24,20 @@ var rootCmd = &cobra.Command{
 			    └──────────────────────────────────────────────────────────┘
 
 		`),
+	}
+	rootCmd.AddCommand(NewRemovedCmd())
+	rootCmd.AddCommand(NewMigrateCmd())
+	rootCmd.AddCommand(NewDefaultCmd())
+	rootCmd.AddCommand(NewDeprecatedCmd())
+	rootCmd.AddCommand(NewUnsupportedCmd())
+	rootCmd.AddCommand(NewValidVersionsCmd())
+
+	return rootCmd
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := CorefileTool().Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
