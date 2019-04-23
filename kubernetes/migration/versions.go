@@ -59,7 +59,11 @@ var Versions = map[string]release{
 					"class": {},
 				},
 			},
-			"health":   {},
+			"health": {},
+			"ready": {
+				status: newdefault,
+				action: func(*corefile.Plugin) (*corefile.Plugin, error) { return &corefile.Plugin{Name: "ready"}, nil },
+			},
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
@@ -808,7 +812,10 @@ var Versions = map[string]release{
 					"prefetch": {},
 				},
 			},
-			"loop":        {},
+			"loop": {
+				status: newdefault,
+				action: func(*corefile.Plugin) (*corefile.Plugin, error) { return &corefile.Plugin{Name: "loop"}, nil },
+			},
 			"reload":      {},
 			"loadbalance": {},
 		},

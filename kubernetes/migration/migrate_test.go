@@ -95,6 +95,7 @@ func TestMigrate(t *testing.T) {
     loop
     reload
     loadbalance
+    ready
 }
 `,
 		},
