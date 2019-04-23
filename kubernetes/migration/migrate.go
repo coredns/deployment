@@ -113,7 +113,7 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 	for {
 		v = Versions[v].nextVersion
 		newSrvs := []*corefile.Server{}
-		for i, s := range cf.Servers {
+		for _, s := range cf.Servers {
 			newPlugs := []*corefile.Plugin{}
 			for _, p := range s.Plugins {
 				vp, present := Versions[v].plugins[p.Name]
@@ -160,6 +160,11 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 					}
 					newOpts = append(newOpts, o)
 				}
+				newPlug := &corefile.Plugin{
+					Name:    p.Name,
+					Args:    p.Args,
+					Options: newOpts,
+				}
 			CheckForNewOptions:
 				for name, vo := range Versions[v].plugins[p.Name].options {
 					if vo.status != newdefault {
@@ -170,43 +175,35 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 							continue CheckForNewOptions
 						}
 					}
-					newOpt, err := vo.action(nil)
+					newPlug, err = vo.add(newPlug)
 					if err != nil {
 						return "", err
 					}
-					newOpts = append(newOpts, newOpt)
 				}
-				newPlugs = append(newPlugs,
-					&corefile.Plugin{
-						Name:    p.Name,
-						Args:    p.Args,
-						Options: newOpts,
-					})
+
+				newPlugs = append(newPlugs, newPlug)
 			}
-			if i == 0 {
-			CheckForNewPlugins:
-				for name, vp := range Versions[v].plugins {
-					if vp.status != newdefault {
-						continue
-					}
-					for _, p := range s.Plugins {
-						if name == p.Name {
-							continue CheckForNewPlugins
-						}
-					}
-					newPlug, err := vp.action(nil)
-					if err != nil {
-						return "", err
-					}
-					newPlugs = append(newPlugs, newPlug)
+			newSrv := &corefile.Server{
+				DomPorts: s.DomPorts,
+				Plugins:  newPlugs,
+			}
+		CheckForNewPlugins:
+			for name, vp := range Versions[v].plugins {
+				if vp.status != newdefault {
+					continue
 				}
-				newSrvs = append(newSrvs,
-					&corefile.Server{
-						DomPorts: s.DomPorts,
-						Plugins:  newPlugs,
-					},
-				)
+				for _, p := range s.Plugins {
+					if name == p.Name {
+						continue CheckForNewPlugins
+					}
+				}
+				newSrv, err = vp.add(newSrv)
+				if err != nil {
+					return "", err
+				}
 			}
+
+			newSrvs = append(newSrvs, newSrv)
 		}
 		cf = corefile.Corefile{Servers: newSrvs}
 		if v == toCoreDNSVersion {

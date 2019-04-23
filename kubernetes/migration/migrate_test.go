@@ -15,6 +15,9 @@ func TestMigrate(t *testing.T) {
 	}{
 		{
 			name: "Remove invalid proxy option",
+			fromVersion:  "1.1.3",
+			toVersion:    "1.2.6",
+			deprecations: true,
 			startCorefile: `.:53 {
     errors
     health
@@ -34,11 +37,6 @@ func TestMigrate(t *testing.T) {
     loadbalance
 }
 `,
-
-			fromVersion:  "1.1.3",
-			toVersion:    "1.2.6",
-			deprecations: true,
-
 			expectedCorefile: `.:53 {
     errors
     health
@@ -59,6 +57,9 @@ func TestMigrate(t *testing.T) {
 		},
 		{
 			name: "Migrate from proxy to forward and handle Kubernetes deprecations",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.5.0",
+			deprecations: true,
 			startCorefile: `.:53 {
     errors
     health
@@ -76,11 +77,6 @@ func TestMigrate(t *testing.T) {
     loadbalance
 }
 `,
-
-			fromVersion:  "1.3.1",
-			toVersion:    "1.5.0",
-			deprecations: true,
-
 			expectedCorefile: `.:53 {
     errors
     health
@@ -99,6 +95,44 @@ func TestMigrate(t *testing.T) {
 }
 `,
 		},
+		{
+			name: "add missing loop and ready plugins",
+			fromVersion:  "1.1.3",
+			toVersion:    "1.5.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+    loop
+    ready
+}
+`,
+		},
+
 	}
 
 	for _, testCase := range testCases {
