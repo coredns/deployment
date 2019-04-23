@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"github.com/coredns/deployment/kubernetes/migration"
 
@@ -49,11 +47,7 @@ corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --de
 // migrateCorefileFromPath takes the path where the Corefile is located and returns the deprecated plugins or directives
 // present in the Corefile.
 func migrateCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string, deprecations bool) (string, error) {
-	if _, err := os.Stat(corefilePath); os.IsNotExist(err) {
-		return "", err
-	}
-
-	fileBytes, err := ioutil.ReadFile(corefilePath)
+	fileBytes, err := getCorefileFromPath(corefilePath)
 	if err != nil {
 		return "", err
 	}

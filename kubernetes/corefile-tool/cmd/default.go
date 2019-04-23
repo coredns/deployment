@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"github.com/coredns/deployment/kubernetes/migration"
 
@@ -38,13 +36,9 @@ corefile-tool default --k8sversion 1.4.0 --corefile /path/to/Corefile`,
 }
 
 // defaultCorefileFromPath takes the path where the Corefile is located and checks
-// if the Corefile is the default for a that version of Kubernetes.
+// if the Corefile is the default for that version of Kubernetes.
 func defaultCorefileFromPath(k8sVersion, corefilePath string) (bool, error) {
-	if _, err := os.Stat(corefilePath); os.IsNotExist(err) {
-		return false, err
-	}
-
-	fileBytes, err := ioutil.ReadFile(corefilePath)
+	fileBytes, err := getCorefileFromPath(corefilePath)
 	if err != nil {
 		return false, err
 	}

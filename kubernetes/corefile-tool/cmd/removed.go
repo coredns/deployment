@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
 	"github.com/coredns/deployment/kubernetes/migration"
 
@@ -45,11 +43,7 @@ corefile-tool removed --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 // removedCorefileFromPath takes the path where the Corefile is located and returns the plugins or directives
 // that have been removed.
 func removedCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string) ([]migration.Notice, error) {
-	if _, err := os.Stat(corefilePath); os.IsNotExist(err) {
-		return nil, err
-	}
-
-	fileBytes, err := ioutil.ReadFile(corefilePath)
+	fileBytes, err := getCorefileFromPath(corefilePath)
 	if err != nil {
 		return nil, err
 	}

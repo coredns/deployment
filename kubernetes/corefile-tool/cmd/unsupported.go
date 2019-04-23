@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/coredns/deployment/kubernetes/migration"
-	"io/ioutil"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -44,11 +43,7 @@ corefile-tool unsupported --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 // unsupportedCorefileFromPath takes the path where the Corefile is located and returns a list of  plugins
 // that have been removed.
 func unsupportedCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string) ([]migration.Notice, error) {
-	if _, err := os.Stat(corefilePath); os.IsNotExist(err) {
-		return nil, err
-	}
-
-	fileBytes, err := ioutil.ReadFile(corefilePath)
+	fileBytes, err := getCorefileFromPath(corefilePath)
 	if err != nil {
 		return nil, err
 	}

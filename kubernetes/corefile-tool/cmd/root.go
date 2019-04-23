@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/lithammer/dedent"
@@ -41,4 +42,17 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func getCorefileFromPath(corefilePath string) ([]byte, error) {
+	if _, err := os.Stat(corefilePath); os.IsNotExist(err) {
+		return nil, err
+	}
+
+	fileBytes, err := ioutil.ReadFile(corefilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	return fileBytes, nil
 }
