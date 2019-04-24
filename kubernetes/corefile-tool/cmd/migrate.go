@@ -38,8 +38,7 @@ corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --de
 	migrateCmd.MarkFlagRequired("to")
 	migrateCmd.Flags().String("corefile", "", "Required: The path where your Corefile is located.")
 	migrateCmd.MarkFlagRequired("corefile")
-	migrateCmd.Flags().Bool("deprecations", false, "Required: Specify whether you want to handle plugin deprecations. [True | False] ")
-	migrateCmd.MarkFlagRequired("deprecations")
+	migrateCmd.Flags().Bool("deprecations", false, "Specify whether you want to handle plugin deprecations. [True | False] ")
 
 	return migrateCmd
 }
