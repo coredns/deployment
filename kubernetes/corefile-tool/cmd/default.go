@@ -28,7 +28,7 @@ corefile-tool default --k8sversion 1.4.0 --corefile /path/to/Corefile`,
 			return nil
 		},
 	}
-	defaultCmd.Flags().String("k8sversion", "", "The Kuberenetes version for which you are checking the default.")
+	defaultCmd.Flags().String("k8sversion", "", "The Kubernetes version for which you are checking the default.")
 	defaultCmd.Flags().String("corefile", "", "Required: The path where your Corefile is located.")
 	defaultCmd.MarkFlagRequired("corefile")
 
