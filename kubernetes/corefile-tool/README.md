@@ -1,74 +1,41 @@
 ## Corefile-tool
 
-Corefile-tool is a simple command line tool which helps you to evaluate and migrate your CoreDNS Corefile Configuration.
-It is based on the [CoreDNS migration tool library](https://github.com/coredns/deployment/tree/master/kubernetes/migration).
+Corefile-tool is a command line tool which helps you to evaluate and migrate your CoreDNS Corefile Configuration.
+It uses the [CoreDNS migration tool library](https://github.com/coredns/deployment/tree/master/kubernetes/migration).
 
 ## Usage
 
 Use the following syntax to run the `corefile-tool` command:
 
-`corefile-tool [command] [flags]`
-
-where `command`, `flags` are:
-
-- `command`: The operation you want to perform. 
-- `flags`  : Specifies flags required to carry out the operations.
+```
+Usage:
+    corefile-tool default --corefile <path> [--k8sversion <k8s-ver>]
+    corefile-tool deprecated --from <coredns-ver> --to <coredns-ver> --corefile <path>
+    corefile-tool migrate --from <coredns-ver> --to <coredns-ver> --corefile <path> [--deprecations <true|false>]
+    corefile-tool released --dockerImageId <id>
+    corefile-tool removed --from <coredns-ver> --to <coredns-ver> --corefile <path>
+    corefile-tool unsupported --from <coredns-ver> --to <coredns-ver> --corefile <path>
+    corefile-tool validversions
+```
 
 
 ### Operations
 
-The following commands are supported:
+The following operations are supported:
 
-- `default`: Default returns true if the Corefile is the default for a that version of Kubernetes. 
-If the Kubernetes version is omitted, returns true if the Corefile is the default for any version.
+- `default`: returns true if the Corefile is the default for the given version of Kubernetes. If `--k8sversion` is not specified, then this will return true if the Corefile is the default for any version of Kubernetes supported by the tool.
 
-    The following flags are accepted by the `default` command:
-     
-     - `k8sversion`: The Kubernetes version for which you are checking the default. 
-     If the Kubernetes version is omitted, returns true if the Corefile is the default for any version.
-     - `corefile`  : The path where your Corefile is located. This flag is mandatory. 
+- `deprecated`: returns a list of plugins/options in the Corefile that have been deprecated.
 
-- `deprecated`    : Deprecated returns a list of deprecated plugins or directives present in the Corefile.
-    
-    The following flags are accepted and mandatory for the `deprecated` command:
-    
-    - `from`: The CoreDNS version you are migrating from.
-    - `to`  : The CoreDNS version you are migrating to.
-    - `corefile`  : The path where your Corefile is located.
-    
-- `migrate`       : Migrate your CoreDNS corefile.
+- `migrate`: updates your CoreDNS corefile to be compatible with the `-to` version. Setting the `--deprecations` flag to `true` will migrate plugins/options as soon as they are announced as deprecated.  Setting the `--deprecations` flag to `false` will migrate plugins/options only once they are removed (or made a no-op).  The default is `false`. 
 
-    The following flags are accepted and mandatory for the `migrate` command:
-        
-    - `from`        : The CoreDNS version you are migrating from.
-    - `to`          : The CoreDNS version you are migrating to. This flag is mandatory.
-    - `corefile`    : The path where your Corefile is located. This flag is mandatory. 
-    - `deprecations`: Specify whether you want to migrate all the deprecations that are present in the current Corefile.
-    Specifying `false` will result in the `migrate` command not migrating the deprecated plugins present in the Corefile.
-        
-- `released`      : Released determines whether your Docker Image ID of a CoreDNS release is valid or not.
+- `released`: determines if the `--dockerImageID` was an official CoreDNS release or not.  Only official releases of CoreDNS are supported by the tool.
 
-    The following flags are accepted and mandatory for the `released` command:
-    
-    - `dockerImageID` : The docker image ID you want to check.
-    
-- `removed`       : Removed returns a list of removed plugins or directives present in the Corefile.
+- `removed`: returns a list plugins/options in the Corefile that have been removed from CoreDNS.
 
-    The following flags are accepted and mandatory for the `removed` command:
-        
-    - `from`        : The CoreDNS version you are migrating from.
-    - `to`          : The CoreDNS version you are migrating to. This flag is mandatory.
-    - `corefile`    : The path where your Corefile is located. This flag is mandatory. 
-    
-- `unsupported`   : Unsupported returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).
+- `unsupported`: returns a list of plugins/options in the Corefile that are not supported by the migration tool (but may still be valid in CoreDNS).
 
-    The following flags are accepted and mandatory for the `unsupported` command:
-        
-    - `from`        : The CoreDNS version you are migrating from.
-    - `to`          : The CoreDNS version you are migrating to. This flag is mandatory.
-    - `corefile`    : The path where your Corefile is located. This flag is mandatory. 
-    
-- `validversions` : Shows valid versions of CoreDNS.
+- `validversions`: Shows the list of CoreDNS versions supported by the this tool.
 
 
 ### Examples
