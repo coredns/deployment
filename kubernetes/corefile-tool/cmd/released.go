@@ -12,21 +12,21 @@ import (
 func NewReleasedCmd() *cobra.Command {
 	releasedCmd := &cobra.Command{
 		Use:   "released",
-		Short: "Determines whether your Docker Image ID of a CoreDNS release is valid or not",
+		Short: "Determines whether your Docker Image SHA of a CoreDNS release is valid or not",
 		Run: func(cmd *cobra.Command, args []string) {
-			image, _ := cmd.Flags().GetString("dockerImageID")
+			image, _ := cmd.Flags().GetString("dockerImageSHA")
 			result := migration.Released(image)
 
 			if result {
-				fmt.Println("The docker image ID is valid")
+				fmt.Println("The docker image SHA is valid")
 			} else {
-				fmt.Println("The docker image ID is invalid")
+				fmt.Println("The docker image SHA is invalid")
 			}
 		},
 	}
 
-	releasedCmd.Flags().String("dockerImageID", "", "Required: The docker image ID you want to check. ")
-	releasedCmd.MarkFlagRequired("dockerImageID")
+	releasedCmd.Flags().String("dockerImageSHA", "", "Required: The docker image SHA you want to check. ")
+	releasedCmd.MarkFlagRequired("dockerImageSHA")
 
 	return releasedCmd
 }
