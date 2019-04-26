@@ -6,6 +6,7 @@ import (
 
 type plugin struct {
 	status     string
+	add        serverActionFn
 	replacedBy string
 	additional string
 	action     pluginActionFn
@@ -14,6 +15,7 @@ type plugin struct {
 
 type option struct {
 	status     string
+	add        pluginActionFn
 	replacedBy string
 	additional string
 	action     optionActionFn
@@ -34,6 +36,7 @@ type release struct {
 	defaultConf string
 }
 
+type serverActionFn func(server *corefile.Server) (*corefile.Server, error)
 type pluginActionFn func(*corefile.Plugin) (*corefile.Plugin, error)
 type optionActionFn func(*corefile.Option) (*corefile.Option, error)
 
@@ -43,6 +46,36 @@ func removeOption(*corefile.Option) (*corefile.Option, error) { return nil, nil 
 func renamePlugin(p *corefile.Plugin, to string) (*corefile.Plugin, error) {
 	p.Name = to
 	return p, nil
+}
+
+func addToServerBlocksWithPlugins(sb *corefile.Server, newPlugin *corefile.Plugin, with []string) (*corefile.Server, error) {
+	if len(with) == 0 {
+		// add to all blocks
+		sb.Plugins = append(sb.Plugins, newPlugin)
+		return sb, nil
+	}
+	for _, p := range sb.Plugins {
+		for _, w := range with {
+			if w == p.Name {
+				// add to this block
+				sb.Plugins = append(sb.Plugins, newPlugin)
+				return sb, nil
+			}
+		}
+	}
+	return sb, nil
+}
+
+func addToKubernetesServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
+	return addToServerBlocksWithPlugins(sb, newPlugin, []string{"kubernetes"})
+}
+
+func addToForwardingServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
+	return addToServerBlocksWithPlugins(sb, newPlugin, []string{"forward", "proxy"})
+}
+
+func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
+	return addToServerBlocksWithPlugins(sb, newPlugin, []string{})
 }
 
 var Versions = map[string]release{
@@ -59,7 +92,13 @@ var Versions = map[string]release{
 					"class": {},
 				},
 			},
-			"health":   {},
+			"health": {},
+			"ready": {
+				status: newdefault,
+				add: func(c *corefile.Server) (*corefile.Server, error) {
+					return addToKubernetesServerBlocks(c, &corefile.Plugin{Name: "ready"})
+				},
+			},
 			"autopath": {},
 			"kubernetes": {
 				options: map[string]option{
@@ -808,7 +847,12 @@ var Versions = map[string]release{
 					"prefetch": {},
 				},
 			},
-			"loop":        {},
+			"loop": {
+				status: newdefault,
+				add: func(s *corefile.Server) (*corefile.Server, error) {
+					return addToForwardingServerBlocks(s, &corefile.Plugin{Name: "loop"})
+				},
+			},
 			"reload":      {},
 			"loadbalance": {},
 		},

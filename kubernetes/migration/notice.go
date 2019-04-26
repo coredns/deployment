@@ -38,4 +38,5 @@ const (
 	ignored     = "ignored"     // plugin/option is ignored by CoreDNS
 	removed     = "removed"     // plugin/option has been removed from CoreDNS
 	unsupported = "unsupported" // plugin/option is not supported by the migration tool
+	newdefault  = "newdefault"  // plugin/option was added to the default corefile
 )

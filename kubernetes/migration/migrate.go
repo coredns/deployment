@@ -101,6 +101,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 }
 
 // Migrate returns version of the Corefile migrated to toCoreDNSVersion, or an error if it cannot.
+// TODO: add newdefault bool parameter?
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
 	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
@@ -161,19 +162,50 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 					}
 					newOpts = append(newOpts, o)
 				}
-				newPlugs = append(newPlugs,
-					&corefile.Plugin{
-						Name:    p.Name,
-						Args:    p.Args,
-						Options: newOpts,
-					})
+				newPlug := &corefile.Plugin{
+					Name:    p.Name,
+					Args:    p.Args,
+					Options: newOpts,
+				}
+			CheckForNewOptions:
+				for name, vo := range Versions[v].plugins[p.Name].options {
+					if vo.status != newdefault {
+						continue
+					}
+					for _, o := range p.Options {
+						if name == o.Name {
+							continue CheckForNewOptions
+						}
+					}
+					newPlug, err = vo.add(newPlug)
+					if err != nil {
+						return "", err
+					}
+				}
+
+				newPlugs = append(newPlugs, newPlug)
 			}
-			newSrvs = append(newSrvs,
-				&corefile.Server{
-					DomPorts: s.DomPorts,
-					Plugins:  newPlugs,
-				},
-			)
+			newSrv := &corefile.Server{
+				DomPorts: s.DomPorts,
+				Plugins:  newPlugs,
+			}
+		CheckForNewPlugins:
+			for name, vp := range Versions[v].plugins {
+				if vp.status != newdefault {
+					continue
+				}
+				for _, p := range s.Plugins {
+					if name == p.Name {
+						continue CheckForNewPlugins
+					}
+				}
+				newSrv, err = vp.add(newSrv)
+				if err != nil {
+					return "", err
+				}
+			}
+
+			newSrvs = append(newSrvs, newSrv)
 		}
 		cf = corefile.Corefile{Servers: newSrvs}
 		if v == toCoreDNSVersion {
