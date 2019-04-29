@@ -21,6 +21,8 @@ func (n *Notice) ToString() string {
 	}
 	if n.Severity == unsupported {
 		s += "is unsupported by this migration tool in " + n.Version + "."
+	} else if n.Severity == newdefault {
+		s += "is added as a default in " + n.Version + "."
 	} else {
 		s += "is " + n.Severity + " in " + n.Version + "."
 	}
