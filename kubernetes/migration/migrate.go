@@ -19,6 +19,13 @@ func Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Not
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, deprecated)
 }
 
+// Ignored returns a list of plugins that are accepted in the Corefile but are ignored. Each Notice returned is a
+// warning, e.g. "plugin 'foo' is ignored." An empty list returned means there are no ignored plugins/options
+// present in the Corefile.
+func Ignored(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
+	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, ignored)
+}
+
 // Removed returns a list of removed plugins or directives present in the Corefile. Each Notice returned is a warning,
 // e.g. "plugin 'foo' is no longer supported." An empty list returned means there are no removed plugins/options
 // present in the Corefile.

@@ -11,6 +11,7 @@ Use the following syntax to run the `corefile-tool` command:
 Usage:
     corefile-tool default --corefile <path> [--k8sversion <k8s-ver>]
     corefile-tool deprecated --from <coredns-ver> --to <coredns-ver> --corefile <path>
+    corefile-tool ignored --from <coredns-ver> --to <coredns-ver> --corefile <path>
     corefile-tool migrate --from <coredns-ver> --to <coredns-ver> --corefile <path> [--deprecations <true|false>]
     corefile-tool released --dockerImageId <id>
     corefile-tool removed --from <coredns-ver> --to <coredns-ver> --corefile <path>
@@ -26,6 +27,8 @@ The following operations are supported:
 - `default`: returns true if the Corefile is the default for the given version of Kubernetes. If `--k8sversion` is not specified, then this will return true if the Corefile is the default for any version of Kubernetes supported by the tool.
 
 - `deprecated`: returns a list of plugins/options in the Corefile that have been deprecated.
+
+- `ignored` : returns a list of plugins/options in the Corefile that have been ignored.
 
 - `migrate`: updates your CoreDNS corefile to be compatible with the `-to` version. Setting the `--deprecations` flag to `true` will migrate plugins/options as soon as they are announced as deprecated.  Setting the `--deprecations` flag to `false` will migrate plugins/options only once they are removed (or made a no-op).  The default is `false`. 
 
@@ -49,6 +52,11 @@ corefile-tool default --k8sversion 1.4.0 --corefile /path/to/Corefile
 
 ```bash
 # See deprecated plugins CoreDNS from v1.4.0 to v1.5.0. 
+corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile
+```
+
+```bash
+# See ignored plugins CoreDNS from v1.4.0 to v1.5.0. 
 corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile
 ```
 
