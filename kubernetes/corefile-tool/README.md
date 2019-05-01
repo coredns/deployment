@@ -57,7 +57,7 @@ corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile
 
 ```bash
 # See ignored plugins CoreDNS from v1.4.0 to v1.5.0. 
-corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile
+corefile-tool ignored --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile
 ```
 
 ```bash
