@@ -33,6 +33,11 @@ func Removed(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, removed)
 }
 
+//AllStatus returns a list of plugins or directives present in the Corefile that have been Deprecated, Ignored and Removed.
+func AllStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
+	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, all)
+}
+
 // Unsupported returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).
 func Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, unsupported)
@@ -74,6 +79,16 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					})
 					continue
 				}
+				if status == all && vp.status != "" {
+					notices = append(notices, Notice{
+						Plugin:     p.Name,
+						Severity:   vp.status,
+						Version:    v,
+						ReplacedBy: vp.replacedBy,
+						Additional: vp.additional,
+					})
+					continue
+				}
 				for _, o := range p.Options {
 					vo, present := Versions[v].plugins[p.Name].options[o.Name]
 					if status == unsupported {
@@ -95,6 +110,10 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					}
 					if vo.status == status {
 						notices = append(notices, Notice{Plugin: p.Name, Option: o.Name, Severity: status, Version: v})
+						continue
+					}
+					if status == all && vo.status != "" {
+						notices = append(notices, Notice{Plugin: p.Name, Option: o.Name, Severity: vo.status, Version: v})
 						continue
 					}
 				}

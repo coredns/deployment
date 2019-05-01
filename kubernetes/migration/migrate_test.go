@@ -269,6 +269,48 @@ func TestIgnored(t *testing.T) {
 	}
 }
 
+func TestAllStatus(t *testing.T) {
+	startCorefile := `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`
+
+	expected := []Notice{
+		{Plugin: "kubernetes", Option: "upstream", Severity: deprecated, Version: "1.4.0"},
+		{Plugin: "proxy", Severity: deprecated, ReplacedBy: "forward", Version: "1.4.0"},
+		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.0"},
+		{Plugin: "proxy", Severity: removed, ReplacedBy: "forward", Version: "1.5.0"},
+	}
+
+	result, err := AllStatus("1.3.1", "1.5.0", startCorefile)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(result) != len(expected) {
+		t.Fatalf("expected to find %v ignored; got %v", len(expected), len(result))
+	}
+
+	for i, dep := range expected {
+		if result[i].ToString() != dep.ToString() {
+			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
+		}
+	}
+}
+
 func TestUnsupported(t *testing.T) {
 	startCorefile := `.:53 {
     errors
