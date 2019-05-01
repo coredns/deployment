@@ -26,14 +26,12 @@ func CorefileTool() *cobra.Command {
 
 		`),
 	}
-	rootCmd.AddCommand(NewRemovedCmd())
 	rootCmd.AddCommand(NewMigrateCmd())
 	rootCmd.AddCommand(NewDefaultCmd())
 	rootCmd.AddCommand(NewDeprecatedCmd())
 	rootCmd.AddCommand(NewUnsupportedCmd())
 	rootCmd.AddCommand(NewValidVersionsCmd())
 	rootCmd.AddCommand(NewReleasedCmd())
-	rootCmd.AddCommand(NewIgnoredCmd())
 
 	return rootCmd
 }

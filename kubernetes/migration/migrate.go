@@ -12,29 +12,10 @@ import (
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
 )
 
-// Deprecated returns a list of deprecated plugins or directives present in the Corefile. Each Notice returned is a
-// warning, e.g. "plugin 'foo' is deprecated." An empty list returned means there are no deprecated plugins/options
-// present in the Corefile.
+// Deprecated returns a list of deprecated, removed, ignored and new default  plugins or directives present in the Corefile.
+// Each Notice returned is a warning, e.g. "plugin 'foo' is deprecated." An empty list returned means there are no
+// deprecated, removed, ignored or new default  plugins/options present in the Corefile.
 func Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
-	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, deprecated)
-}
-
-// Ignored returns a list of plugins that are accepted in the Corefile but are ignored. Each Notice returned is a
-// warning, e.g. "plugin 'foo' is ignored." An empty list returned means there are no ignored plugins/options
-// present in the Corefile.
-func Ignored(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
-	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, ignored)
-}
-
-// Removed returns a list of removed plugins or directives present in the Corefile. Each Notice returned is a warning,
-// e.g. "plugin 'foo' is no longer supported." An empty list returned means there are no removed plugins/options
-// present in the Corefile.
-func Removed(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
-	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, removed)
-}
-
-//AllStatus returns a list of plugins or directives present in the Corefile that have been Deprecated, Ignored and Removed.
-func AllStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, all)
 }
 
@@ -69,17 +50,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 				if !present {
 					continue
 				}
-				if vp.status == status {
-					notices = append(notices, Notice{
-						Plugin:     p.Name,
-						Severity:   status,
-						Version:    v,
-						ReplacedBy: vp.replacedBy,
-						Additional: vp.additional,
-					})
-					continue
-				}
-				if status == all && vp.status != "" {
+				if vp.status != "" {
 					notices = append(notices, Notice{
 						Plugin:     p.Name,
 						Severity:   vp.status,
@@ -108,11 +79,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					if !present {
 						continue
 					}
-					if vo.status == status {
-						notices = append(notices, Notice{Plugin: p.Name, Option: o.Name, Severity: status, Version: v})
-						continue
-					}
-					if status == all && vo.status != "" {
+					if vo.status != "" {
 						notices = append(notices, Notice{Plugin: p.Name, Option: o.Name, Severity: vo.status, Version: v})
 						continue
 					}
