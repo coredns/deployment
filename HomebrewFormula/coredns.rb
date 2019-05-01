@@ -46,7 +46,7 @@ class Coredns < Formula
   def install
     ENV["GOPATH"] = buildpath
     ENV["GOOS"] = "darwin"
-    ENV["GOARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
+    ENV["GOARCH"] = Hardware::CPU.is_64_bit? ? "amd64" : "386"
 
     (buildpath/"src/github.com/coredns/coredns").install buildpath.children
     Language::Go.stage_deps resources, buildpath/"src"
