@@ -22,10 +22,10 @@ type option struct {
 }
 
 type release struct {
-	k8sRelease    string
-	nextVersion   string
-	dockerImageID string
-	plugins       map[string]plugin
+	k8sRelease     string
+	nextVersion    string
+	dockerImageSHA string
+	plugins        map[string]plugin
 
 	// defaultConf hold the default Corefile template packaged with the corresponding k8sRelease.
 	// Wildcards are used for fuzzy matching:
@@ -80,7 +80,7 @@ func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*cor
 
 var Versions = map[string]release{
 	"1.5.0": {
-		dockerImageID: "7987f0908caf",
+		dockerImageSHA: "e83beb5e43f8513fa735e77ffc5859640baea30a882a11cc75c4c3244a737d3c",
 		plugins: map[string]plugin{
 			"errors": {
 				options: map[string]option{
@@ -166,8 +166,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.4.0": {
-		nextVersion:   "1.5.0",
-		dockerImageID: "a9e015907f63",
+		nextVersion:    "1.5.0",
+		dockerImageSHA: "70a92e9f6fc604f9b629ca331b6135287244a86612f550941193ec7e12759417",
 		plugins: map[string]plugin{
 			"errors": {
 				options: map[string]option{
@@ -244,9 +244,9 @@ var Versions = map[string]release{
 		},
 	},
 	"1.3.1": {
-		nextVersion:   "1.4.0",
-		k8sRelease:    "1.14",
-		dockerImageID: "eb516548c180",
+		nextVersion:    "1.4.0",
+		k8sRelease:     "1.14",
+		dockerImageSHA: "02382353821b12c21b062c59184e227e001079bb13ebd01f9d3270ba0fcbf1e4",
 		defaultConf: `.:53 {
     errors
     health
@@ -340,8 +340,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.3.0": {
-		nextVersion:   "1.3.1",
-		dockerImageID: "2ee68ed074c6",
+		nextVersion:    "1.3.1",
+		dockerImageSHA: "e030773c7fee285435ed7fc7623532ee54c4c1c4911fb24d95cd0170a8a768bc",
 		plugins: map[string]plugin{
 			"errors": {
 				options: map[string]option{
@@ -417,9 +417,9 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.6": {
-		nextVersion:   "1.3.0",
-		k8sRelease:    "1.13",
-		dockerImageID: "f59dcacceff4",
+		nextVersion:    "1.3.0",
+		k8sRelease:     "1.13",
+		dockerImageSHA: "81936728011c0df9404cb70b95c17bbc8af922ec9a70d0561a5d01fefa6ffa51",
 		defaultConf: `.:53 {
     errors
     health
@@ -504,8 +504,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.5": {
-		nextVersion:   "1.2.6",
-		dockerImageID: "bd254cf72111",
+		nextVersion:    "1.2.6",
+		dockerImageSHA: "33c8da20b887ae12433ec5c40bfddefbbfa233d5ce11fb067122e68af30291d6",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -571,8 +571,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.4": {
-		nextVersion:   "1.2.5",
-		dockerImageID: "d35fe8670379",
+		nextVersion:    "1.2.5",
+		dockerImageSHA: "a0d40ad961a714c699ee7b61b77441d165f6252f9fb84ac625d04a8d8554c0ec",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -638,8 +638,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.3": {
-		nextVersion:   "1.2.4",
-		dockerImageID: "d46263e07d7a",
+		nextVersion:    "1.2.4",
+		dockerImageSHA: "12f3cab301c826978fac736fd40aca21ac023102fd7f4aa6b4341ae9ba89e90e",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -705,9 +705,9 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.2": {
-		nextVersion:   "1.2.3",
-		k8sRelease:    "1.12",
-		dockerImageID: "367cdc8433a4",
+		nextVersion:    "1.2.3",
+		k8sRelease:     "1.12",
+		dockerImageSHA: "3e2be1cec87aca0b74b7668bbe8c02964a95a402e45ceb51b2252629d608d03a",
 		defaultConf: `.:53 {
     errors
     health
@@ -787,8 +787,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.1": {
-		nextVersion:   "1.2.2",
-		dockerImageID: "a575d86d4058",
+		nextVersion:    "1.2.2",
+		dockerImageSHA: "fb129c6a7c8912bc6d9cc4505e1f9007c5565ceb1aa6369750e60cc79771a244",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -858,8 +858,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.2.0": {
-		nextVersion:   "1.2.1",
-		dockerImageID: "da1adafc0e78",
+		nextVersion:    "1.2.1",
+		dockerImageSHA: "ae69a32f8cc29a3e2af9628b6473f24d3e977950a2cb62ce8911478a61215471",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -926,8 +926,8 @@ var Versions = map[string]release{
 		},
 	},
 	"1.1.4": {
-		nextVersion:   "1.2.0",
-		dockerImageID: "9919f8566026",
+		nextVersion:    "1.2.0",
+		dockerImageSHA: "463c7021141dd3bfd4a75812f4b735ef6aadc0253a128f15ffe16422abe56e50",
 		plugins: map[string]plugin{
 			"errors": {},
 			"log": {
@@ -993,9 +993,9 @@ var Versions = map[string]release{
 		},
 	},
 	"1.1.3": {
-		nextVersion:   "1.1.4",
-		k8sRelease:    "1.11",
-		dockerImageID: "b3b94275d97c",
+		nextVersion:    "1.1.4",
+		k8sRelease:     "1.11",
+		dockerImageSHA: "a5dd18e048983c7401e15648b55c3ef950601a86dd22370ef5dfc3e72a108aaa",
 		defaultConf: `.:53 {
     errors
     health

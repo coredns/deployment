@@ -264,10 +264,10 @@ NextVersion:
 	return false
 }
 
-// Released returns true if dockerImageID matches any released image of CoreDNS.
-func Released(dockerImageID string) bool {
+// Released returns true if dockerImageSHA matches any released image of CoreDNS.
+func Released(dockerImageSHA string) bool {
 	for _, v := range Versions {
-		if v.dockerImageID == dockerImageID {
+		if v.dockerImageSHA == dockerImageSHA {
 			return true
 		}
 	}
