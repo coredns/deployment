@@ -2,32 +2,39 @@ package migration
 
 import (
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
+	"github.com/pkg/errors"
 )
 
 type plugin struct {
 	status     string
-	add        serverActionFn
 	replacedBy string
 	additional string
-	action     pluginActionFn
 	options    map[string]option
+	action     pluginActionFn // action affecting this plugin only
+	add        serverActionFn // action to add a new plugin to the server block
 }
 
 type option struct {
 	status     string
-	add        pluginActionFn
 	replacedBy string
 	additional string
-	action     optionActionFn
+	action     optionActionFn // take action affecting this option only
+	add        pluginActionFn // take action to add the option to the plugin
 }
 
 type release struct {
 	k8sRelease     string
 	nextVersion    string
 	dockerImageSHA string
-	plugins        map[string]plugin
+	plugins        map[string]plugin // list of plugins with deprecation status and migration actions
 
-	// defaultConf hold the default Corefile template packaged with the corresponding k8sRelease.
+	// postProcess is a post processing action to take on the corefile as a whole.  Used for complex migration
+	//   tasks that dont fit well into the modular plugin/option migration framework. For example, when the
+	//   action on a plugin would need to extend beyond the scope of that plugin (affecting other plugins, or
+	//   server blocks, etc). e.g. Splitting plugins out into separate server blocks.
+	postProcess corefileAction
+
+	// defaultConf holds the default Corefile template packaged with the corresponding k8sRelease.
 	// Wildcards are used for fuzzy matching:
 	//   "*"   matches exactly one token
 	//   "***" matches 0 all remaining tokens on the line
@@ -36,7 +43,8 @@ type release struct {
 	defaultConf string
 }
 
-type serverActionFn func(server *corefile.Server) (*corefile.Server, error)
+type corefileAction func(*corefile.Corefile) (*corefile.Corefile, error)
+type serverActionFn func(*corefile.Server) (*corefile.Server, error)
 type pluginActionFn func(*corefile.Plugin) (*corefile.Plugin, error)
 type optionActionFn func(*corefile.Option) (*corefile.Option, error)
 
@@ -48,7 +56,7 @@ func renamePlugin(p *corefile.Plugin, to string) (*corefile.Plugin, error) {
 	return p, nil
 }
 
-func addToServerBlocksWithPlugins(sb *corefile.Server, newPlugin *corefile.Plugin, with []string) (*corefile.Server, error) {
+func addToServerBlockWithPlugins(sb *corefile.Server, newPlugin *corefile.Plugin, with []string) (*corefile.Server, error) {
 	if len(with) == 0 {
 		// add to all blocks
 		sb.Plugins = append(sb.Plugins, newPlugin)
@@ -67,15 +75,15 @@ func addToServerBlocksWithPlugins(sb *corefile.Server, newPlugin *corefile.Plugi
 }
 
 func addToKubernetesServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
-	return addToServerBlocksWithPlugins(sb, newPlugin, []string{"kubernetes"})
+	return addToServerBlockWithPlugins(sb, newPlugin, []string{"kubernetes"})
 }
 
 func addToForwardingServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
-	return addToServerBlocksWithPlugins(sb, newPlugin, []string{"forward", "proxy"})
+	return addToServerBlockWithPlugins(sb, newPlugin, []string{"forward", "proxy"})
 }
 
 func addToAllServerBlocks(sb *corefile.Server, newPlugin *corefile.Plugin) (*corefile.Server, error) {
-	return addToServerBlocksWithPlugins(sb, newPlugin, []string{})
+	return addToServerBlockWithPlugins(sb, newPlugin, []string{})
 }
 
 var Versions = map[string]release{
@@ -164,6 +172,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 		},
+		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
 	"1.4.0": {
 		nextVersion:    "1.5.0",
@@ -242,6 +251,7 @@ var Versions = map[string]release{
 			"reload":      {},
 			"loadbalance": {},
 		},
+		postProcess: breakForwardStubDomainsIntoServerBlocks,
 	},
 	"1.3.1": {
 		nextVersion:    "1.4.0",
@@ -1055,4 +1065,44 @@ var proxyRemoveHttpsGoogleProtocol = func(o *corefile.Option) (*corefile.Option,
 		return nil, nil
 	}
 	return o, nil
+}
+
+func breakForwardStubDomainsIntoServerBlocks(cf *corefile.Corefile) (*corefile.Corefile, error) {
+	for _, sb := range cf.Servers {
+		for j, fwd := range sb.Plugins {
+			if fwd.Name != "forward" {
+				continue
+			}
+			if len(fwd.Args) == 0 {
+				return nil, errors.New("found invalid forward plugin declaration")
+			}
+			if fwd.Args[0] == "." {
+				// dont move the default upstream
+				continue
+			}
+			if len(sb.DomPorts) != 1 {
+				return cf, errors.New("unhandled migration of multi-domain/port server block")
+			}
+			if sb.DomPorts[0] != "." && sb.DomPorts[0] != ".:53" {
+				return cf, errors.New("unhandled migration of non-default domain/port server block")
+			}
+
+			newSb := &corefile.Server{}            // create a new server block
+			newSb.DomPorts = []string{fwd.Args[0]} // copy the forward zone to the server block domain
+			fwd.Args[0] = "."                         // the plugin's zone changes to "." for brevity
+			newSb.Plugins = append(newSb.Plugins, fwd)      // add the plugin to its new server block
+
+			// Add appropriate addtl plugins to new server block
+			newSb.Plugins = append(newSb.Plugins, &corefile.Plugin{Name: "loop"})
+			newSb.Plugins = append(newSb.Plugins, &corefile.Plugin{Name: "errors"})
+			newSb.Plugins = append(newSb.Plugins, &corefile.Plugin{Name: "cache", Args: []string{"30"}})
+
+			//add new server block to corefile
+			cf.Servers = append(cf.Servers, newSb)
+
+			//remove the forward plugin from the original server block
+			sb.Plugins = append(sb.Plugins[:j], sb.Plugins[j+1:]...)
+		}
+	}
+	return cf, nil
 }

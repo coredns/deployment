@@ -25,7 +25,7 @@ type Option struct {
 	Args []string
 }
 
-func New(s string) (Corefile, error) {
+func New(s string) (*Corefile, error) {
 	c := Corefile{}
 	cc := caddy.NewTestController("migration", s)
 	depth := 0
@@ -63,7 +63,7 @@ func New(s string) (Corefile, error) {
 				})
 		}
 	}
-	return c, nil
+	return &c, nil
 }
 
 func (c *Corefile) ToString() (out string) {

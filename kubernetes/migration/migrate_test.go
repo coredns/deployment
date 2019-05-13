@@ -1,6 +1,7 @@
 package migration
 
 import (
+	"github.com/andreyvit/diff"
 	"testing"
 )
 
@@ -132,6 +133,59 @@ func TestMigrate(t *testing.T) {
 }
 `,
 		},
+		{
+			name:         "handle multiple proxy plugins",
+			fromVersion:  "1.1.3",
+			toVersion:    "1.5.0",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy mystub-1.example.org 1.2.3.4
+    proxy mystub-2.example.org 5.6.7.8
+    proxy . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+    loop
+    ready
+}
+
+mystub-1.example.org {
+    forward . 1.2.3.4
+    loop
+    errors
+    cache 30
+}
+
+mystub-2.example.org {
+    forward . 5.6.7.8
+    loop
+    errors
+    cache 30
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {
@@ -144,7 +198,7 @@ func TestMigrate(t *testing.T) {
 			}
 
 			if result != testCase.expectedCorefile {
-				t.Errorf("expected %v; got %v", testCase.expectedCorefile, result)
+				t.Errorf("expected -> got diffs:\n%v", diff.LineDiff(testCase.expectedCorefile, result))
 			}
 		})
 	}

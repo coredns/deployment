@@ -200,7 +200,17 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 
 			newSrvs = append(newSrvs, newSrv)
 		}
-		cf = corefile.Corefile{Servers: newSrvs}
+
+		cf = &corefile.Corefile{Servers: newSrvs}
+
+		// apply any global corefile level post processing
+		if Versions[v].postProcess != nil {
+			cf, err = Versions[v].postProcess(cf)
+			if err != nil {
+				return "", err
+			}
+		}
+
 		if v == toCoreDNSVersion {
 			break
 		}
