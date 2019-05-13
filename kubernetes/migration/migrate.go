@@ -84,6 +84,34 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 						continue
 					}
 				}
+				if status != unsupported {
+				CheckForNewOptions:
+					for name, vo := range Versions[v].plugins[p.Name].options {
+						if vo.status != newdefault {
+							continue
+						}
+						for _, o := range p.Options {
+							if name == o.Name {
+								continue CheckForNewOptions
+							}
+						}
+						notices = append(notices, Notice{Plugin: p.Name, Option: name, Severity: newdefault, Version: v})
+					}
+				}
+			}
+			if status != unsupported {
+			CheckForNewPlugins:
+				for name, vp := range Versions[v].plugins {
+					if vp.status != newdefault {
+						continue
+					}
+					for _, p := range s.Plugins {
+						if name == p.Name {
+							continue CheckForNewPlugins
+						}
+					}
+					notices = append(notices, Notice{Plugin: name, Option: "", Severity: newdefault, Version: v})
+				}
 			}
 		}
 		if v == toCoreDNSVersion {
@@ -94,7 +122,6 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 }
 
 // Migrate returns version of the Corefile migrated to toCoreDNSVersion, or an error if it cannot.
-// TODO: add newdefault bool parameter?
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
 	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {

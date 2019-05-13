@@ -208,7 +208,6 @@ func TestDeprecated(t *testing.T) {
 	startCorefile := `.:53 {
     errors
     health
-	ready
     kubernetes cluster.local in-addr.arpa ip6.arpa {
         pods insecure
         upstream
@@ -226,9 +225,9 @@ func TestDeprecated(t *testing.T) {
 	expected := []Notice{
 		{Plugin: "kubernetes", Option: "upstream", Severity: deprecated, Version: "1.4.0"},
 		{Plugin: "proxy", Severity: deprecated, ReplacedBy: "forward", Version: "1.4.0"},
-		{Plugin: "ready", Severity: newdefault, Version: "1.5.0"},
 		{Option: "upstream", Plugin: "kubernetes", Severity: ignored, Version: "1.5.0"},
 		{Plugin: "proxy", Severity: removed, ReplacedBy: "forward", Version: "1.5.0"},
+		{Plugin: "ready", Severity: newdefault, Version: "1.5.0"},
 	}
 
 	result, err := Deprecated("1.3.1", "1.5.0", startCorefile)
@@ -238,7 +237,7 @@ func TestDeprecated(t *testing.T) {
 	}
 
 	if len(result) != len(expected) {
-		t.Fatalf("expected to find %v deprecations; got %v", len(expected), len(result))
+		t.Fatalf("expected to find %v notifications; got %v", len(expected), len(result))
 	}
 
 	for i, dep := range expected {
