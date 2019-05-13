@@ -1,8 +1,8 @@
 package migration
 
 import (
+	"errors"
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
-	"github.com/pkg/errors"
 )
 
 type plugin struct {
@@ -1087,10 +1087,10 @@ func breakForwardStubDomainsIntoServerBlocks(cf *corefile.Corefile) (*corefile.C
 				return cf, errors.New("unhandled migration of non-default domain/port server block")
 			}
 
-			newSb := &corefile.Server{}            // create a new server block
-			newSb.DomPorts = []string{fwd.Args[0]} // copy the forward zone to the server block domain
-			fwd.Args[0] = "."                         // the plugin's zone changes to "." for brevity
-			newSb.Plugins = append(newSb.Plugins, fwd)      // add the plugin to its new server block
+			newSb := &corefile.Server{}                // create a new server block
+			newSb.DomPorts = []string{fwd.Args[0]}     // copy the forward zone to the server block domain
+			fwd.Args[0] = "."                          // the plugin's zone changes to "." for brevity
+			newSb.Plugins = append(newSb.Plugins, fwd) // add the plugin to its new server block
 
 			// Add appropriate addtl plugins to new server block
 			newSb.Plugins = append(newSb.Plugins, &corefile.Plugin{Name: "loop"})
