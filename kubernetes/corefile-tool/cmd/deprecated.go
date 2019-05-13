@@ -12,8 +12,8 @@ import (
 func NewDeprecatedCmd() *cobra.Command {
 	deprecatedCmd := &cobra.Command{
 		Use:   "deprecated",
-		Short: "Deprecated returns a list of deprecated plugins or directives present in the Corefile.",
-		Example: `# See deprecated plugins CoreDNS from v1.4.0 to v1.5.0. 
+		Short: "Deprecated returns a list of deprecated, removed, ignored and new default plugins or directives present in the Corefile.",
+		Example: `# See deprecated, removed, ignored and new default plugins CoreDNS from v1.4.0 to v1.5.0. 
 corefile-tool deprecated --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			from, _ := cmd.Flags().GetString("from")
