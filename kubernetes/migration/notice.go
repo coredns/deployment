@@ -36,10 +36,13 @@ func (n *Notice) ToString() string {
 }
 
 const (
-	deprecated  = "deprecated"  // plugin/option is deprecated in CoreDNS
-	ignored     = "ignored"     // plugin/option is ignored by CoreDNS
-	removed     = "removed"     // plugin/option has been removed from CoreDNS
-	unsupported = "unsupported" // plugin/option is not supported by the migration tool
-	newdefault  = "newdefault"  // plugin/option was added to the default corefile
-	all			= "all"         // all plugin/option that are deprecated, ignored, removed and new defaults.
+	// The following statuses are used to indicate the state of support/deprecation in a given release.
+	deprecated  = "deprecated"  // deprecated, but still completely functional
+	ignored     = "ignored"     // if included in the corefile, it will be ignored by CoreDNS
+	removed     = "removed"     // completely removed from CoreDNS, and would cause CoreDNS to exit if present in the Corefile
+	newdefault  = "newdefault"  // added to the default corefile.  CoreDNS may not function properly if it is not present in the corefile.
+	unsupported = "unsupported" // the plugin/option is not supported by the migration tool
+
+	// The following statuses are used for selecting/filtering notifications
+	all = "all" // show all statuses
 )
