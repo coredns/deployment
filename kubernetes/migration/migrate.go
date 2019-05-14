@@ -12,14 +12,15 @@ import (
 	"github.com/coredns/deployment/kubernetes/migration/corefile"
 )
 
-// Deprecated returns a list of deprecated, removed, ignored and new default  plugins or directives present in the Corefile.
-// Each Notice returned is a warning, e.g. "plugin 'foo' is deprecated." An empty list returned means there are no
-// deprecated, removed, ignored or new default  plugins/options present in the Corefile.
+// Deprecated returns a list of deprecation notifications affecting the guven Corefile.  Notifications are returned for
+// any deprecated, removed, or ignored plugins/directives present in the Corefile.  Notifications are also returned for
+// any new default plugins that would be added in a migration.
 func Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, all)
 }
 
-// Unsupported returns a list of plugins that are not recognized/supported by the migration tool (but may still be valid in CoreDNS).
+// Unsupported returns a list notifications of plugins/options that are not handled supported by this migration tool,
+// but may still be valid in CoreDNS.
 func Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error) {
 	return getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, unsupported)
 }
@@ -121,7 +122,9 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 	return notices, nil
 }
 
-// Migrate returns version of the Corefile migrated to toCoreDNSVersion, or an error if it cannot.
+// Migrate returns the Corefile converted to toCoreDNSVersion, or an error if it cannot.
+// If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
+// If deprecations is false, deprecated plugins/options will be migrated only once they become removed or ignored.
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
 	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
