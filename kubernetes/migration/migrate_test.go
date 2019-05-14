@@ -230,7 +230,7 @@ func TestDeprecated(t *testing.T) {
 		{Plugin: "ready", Severity: newdefault, Version: "1.5.0"},
 	}
 
-	result, err := Deprecated("1.3.1", "1.5.0", startCorefile)
+	result, err := Deprecated("1.2.0", "1.5.0", startCorefile)
 
 	if err != nil {
 		t.Fatal(err)

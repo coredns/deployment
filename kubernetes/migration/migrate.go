@@ -50,7 +50,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 				if !present {
 					continue
 				}
-				if vp.status != "" {
+				if vp.status != "" && vp.status != newdefault {
 					notices = append(notices, Notice{
 						Plugin:     p.Name,
 						Severity:   vp.status,
@@ -79,7 +79,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 					if !present {
 						continue
 					}
-					if vo.status != "" {
+					if vo.status != "" && vo.status != newdefault {
 						notices = append(notices, Notice{Plugin: p.Name, Option: o.Name, Severity: vo.status, Version: v})
 						continue
 					}
