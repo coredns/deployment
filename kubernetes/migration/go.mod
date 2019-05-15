@@ -1,3 +1,3 @@
-module /Users/srajan/go/src/github.com/coredns/deployment/kubernetes/migration/
+module github.com/coredns/deployment/kubernetes/migration/
 
 go 1.12
