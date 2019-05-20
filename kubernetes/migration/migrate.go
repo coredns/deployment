@@ -29,7 +29,7 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 	if fromCoreDNSVersion == toCoreDNSVersion {
 		return nil, nil
 	}
-	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
+	err := validUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -125,14 +125,15 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 	return notices, nil
 }
 
-// Migrate returns the Corefile converted to toCoreDNSVersion, or an error if it cannot.
+// Migrate returns the Corefile converted to toCoreDNSVersion, or an error if it cannot.  This function only accepts
+// a forward migration, where the destination version is => the start version.
 // If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
 // If deprecations is false, deprecated plugins/options will be migrated only once they become removed or ignored.
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
 	if fromCoreDNSVersion == toCoreDNSVersion {
 		return corefileStr, nil
 	}
-	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
+	err := validUpMigration(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
 		return "", err
 	}
@@ -254,6 +255,89 @@ func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecati
 	return cf.ToString(), nil
 }
 
+// MigrateDown returns the Corefile converted to toCoreDNSVersion, or an error if it cannot. This function only accepts
+// a downward migration, where the destination version is <= the start version.
+func MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (string, error) {
+	if fromCoreDNSVersion == toCoreDNSVersion {
+		return corefileStr, nil
+	}
+	err := validDownMigration(fromCoreDNSVersion, toCoreDNSVersion)
+	if err != nil {
+		return "", err
+	}
+	cf, err := corefile.New(corefileStr)
+	if err != nil {
+		return "", err
+	}
+	v := fromCoreDNSVersion
+	for {
+		newSrvs := []*corefile.Server{}
+		for _, s := range cf.Servers {
+			newPlugs := []*corefile.Plugin{}
+			for _, p := range s.Plugins {
+				vp, present := Versions[v].plugins[p.Name]
+				if !present {
+					newPlugs = append(newPlugs, p)
+					continue
+				}
+				if vp.downAction == nil {
+					newPlugs = append(newPlugs, p)
+					continue
+				}
+				p, err := vp.downAction(p)
+				if err != nil {
+					return "", err
+				}
+				if p == nil {
+					// remove plugin, skip options processing
+					continue
+				}
+
+				newOpts := []*corefile.Option{}
+				for _, o := range p.Options {
+					vo, present := Versions[v].plugins[p.Name].options[o.Name]
+					if !present {
+						newOpts = append(newOpts, o)
+						continue
+					}
+					if vo.downAction == nil {
+						newOpts = append(newOpts, o)
+						continue
+					}
+					o, err := vo.downAction(o)
+					if err != nil {
+						return "", err
+					}
+					if o == nil {
+						// remove option
+						continue
+					}
+					newOpts = append(newOpts, o)
+				}
+				newPlug := &corefile.Plugin{
+					Name:    p.Name,
+					Args:    p.Args,
+					Options: newOpts,
+				}
+				newPlugs = append(newPlugs, newPlug)
+			}
+			newSrv := &corefile.Server{
+				DomPorts: s.DomPorts,
+				Plugins:  newPlugs,
+			}
+			newSrvs = append(newSrvs, newSrv)
+		}
+
+		cf = &corefile.Corefile{Servers: newSrvs}
+
+		if v == toCoreDNSVersion {
+			break
+		}
+		v = Versions[v].priorVersion
+	}
+	return cf.ToString(), nil
+}
+
 // Default returns true if the Corefile is the default for a given version of Kubernetes.
 // Or, if k8sVersion is empty, Default returns true if the Corefile is the default for any version of Kubernetes.
 func Default(k8sVersion, corefileStr string) bool {
@@ -330,7 +414,7 @@ func validateVersion(fromCoreDNSVersion string) error {
 	return nil
 }
 
-func validateVersions(fromCoreDNSVersion, toCoreDNSVersion string) error {
+func validUpMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
 	err := validateVersion(fromCoreDNSVersion)
 	if err != nil {
 		return err
@@ -341,5 +425,19 @@ func validateVersions(fromCoreDNSVersion, toCoreDNSVersion string) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("cannot migrate to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
+	return fmt.Errorf("cannot migrate up to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
+}
+
+func validDownMigration(fromCoreDNSVersion, toCoreDNSVersion string) error {
+	err := validateVersion(fromCoreDNSVersion)
+	if err != nil {
+		return err
+	}
+	for prior := Versions[fromCoreDNSVersion].priorVersion; prior != ""; prior = Versions[prior].priorVersion {
+		if prior != toCoreDNSVersion {
+			continue
+		}
+		return nil
+	}
+	return fmt.Errorf("cannot migrate down to '%v' from '%v'", toCoreDNSVersion, fromCoreDNSVersion)
 }

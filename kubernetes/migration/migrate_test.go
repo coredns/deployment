@@ -242,6 +242,70 @@ mystub-2.example.org {
 	}
 }
 
+func TestMigrateDown(t *testing.T) {
+	testCases := []struct {
+		name             string
+		fromVersion      string
+		toVersion        string
+		deprecations     bool
+		startCorefile    string
+		expectedCorefile string
+	}{
+		{
+			name:        "from 1.5.0 to 1.1.3",
+			fromVersion: "1.5.0",
+			toVersion:   "1.1.3",
+			startCorefile: `.:53 {
+    errors
+    health
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    reload
+    loadbalance
+}
+`,
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+
+			result, err := MigrateDown(testCase.fromVersion, testCase.toVersion, testCase.startCorefile)
+
+			if err != nil {
+				t.Errorf("%v", err)
+			}
+
+			if result != testCase.expectedCorefile {
+				t.Errorf("expected -> got diffs:\n%v", diff.LineDiff(testCase.expectedCorefile, result))
+			}
+		})
+	}
+}
+
 func TestDeprecated(t *testing.T) {
 	startCorefile := `.:53 {
     errors
@@ -433,7 +497,7 @@ func TestValidateVersions(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		err := validateVersions(tc.from, tc.to)
+		err := validUpMigration(tc.from, tc.to)
 
 		if !tc.shouldErr && err != nil {
 			t.Errorf("expected '%v' to '%v' to be valid versions.", tc.from, tc.to)
