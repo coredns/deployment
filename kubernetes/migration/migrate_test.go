@@ -186,6 +186,44 @@ mystub-2.example.org {
 }
 `,
 		},
+		{
+			name:         "no-op same verison migration",
+			fromVersion:  "1.1.3",
+			toVersion:    "1.1.3",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy example.org 1.2.3.4:53
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy example.org 1.2.3.4:53
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {
@@ -244,6 +282,15 @@ func TestDeprecated(t *testing.T) {
 		if result[i].ToString() != dep.ToString() {
 			t.Errorf("expected to get '%v'; got '%v'", dep.ToString(), result[i].ToString())
 		}
+	}
+
+	result, err = Deprecated("1.3.1", "1.3.1", startCorefile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected = []Notice{}
+	if len(result) != len(expected) {
+		t.Fatalf("expected to find %v notifications in noop upgrade; got %v", len(expected), len(result))
 	}
 }
 
@@ -377,6 +424,7 @@ func TestValidateVersions(t *testing.T) {
 		to        string
 		shouldErr bool
 	}{
+		{"1.3.1", "1.3.1", true},
 		{"1.3.1", "1.5.0", false},
 		{"1.5.0", "1.3.1", true},
 		{"banana", "1.5.0", true},
