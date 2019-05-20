@@ -30,15 +30,22 @@ any new default plugins that would be added in a migration.  Notices
 
 `Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error)`
 
-Migrate returns a migrated version of the Corefile, or an error if it cannot. It will:
+Migrate returns a migrated version of the Corefile, or an error if it cannot. The _to_ version 
+must be >= the _from_ version. It will:
   * replace/convert any plugins/options that have replacements (e.g. _proxy_ -> _forward_)
   * return an error if replacable plugins/options cannot be converted (e.g. proxy _options_ not available in _forward_)
   * remove plugins/options that do not have replacements (e.g. kubernetes `upstream`)
-  * add in any new default plugins where applicable if they are not already present (e.g. adding _loop_ plugin when it was added).
-    This will have to be case by case, and could potentially get complicated.
+  * add in any new default plugins where applicable if they are not already present.
   * If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
   * If deprecations is false, deprecated plugins/options will be migrated only once they become removed or ignored.
 
+`MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (string, error)`
+
+MigrateDown returns a downward migrated version of the Corefile, or an error if it cannot. The _to_ version 
+must be <= the _from_ version.
+  * It will handle the removal of plugins and options that no longer exist in the destination 
+    version when downgrading.
+  * It will not restore plugins/options that might have been removed or altered during an upward migration. 
 
 `Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error)`
 
