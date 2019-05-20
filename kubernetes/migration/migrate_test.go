@@ -288,6 +288,44 @@ func TestMigrateDown(t *testing.T) {
 }
 `,
 		},
+		{
+			name:         "no-op same version migration",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.3.1",
+			deprecations: true,
+			startCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+			expectedCorefile: `.:53 {
+    errors
+    health
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        upstream
+        fallthrough in-addr.arpa ip6.arpa
+    }
+    prometheus :9153
+    proxy . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+`,
+		},
 	}
 
 	for _, testCase := range testCases {
