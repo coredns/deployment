@@ -26,15 +26,18 @@ func Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]No
 }
 
 func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string) ([]Notice, error) {
-	notices := []Notice{}
+	if fromCoreDNSVersion == toCoreDNSVersion {
+		return nil, nil
+	}
 	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
-		return notices, err
+		return nil, err
 	}
 	cf, err := corefile.New(corefileStr)
 	if err != nil {
-		return notices, err
+		return nil, err
 	}
+	notices := []Notice{}
 	v := fromCoreDNSVersion
 	for {
 		v = Versions[v].nextVersion
@@ -126,6 +129,9 @@ func getStatus(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, status string)
 // If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
 // If deprecations is false, deprecated plugins/options will be migrated only once they become removed or ignored.
 func Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error) {
+	if fromCoreDNSVersion == toCoreDNSVersion {
+		return corefileStr, nil
+	}
 	err := validateVersions(fromCoreDNSVersion, toCoreDNSVersion)
 	if err != nil {
 		return "", err
