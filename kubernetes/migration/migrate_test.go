@@ -187,9 +187,9 @@ mystub-2.example.org {
 `,
 		},
 		{
-			name:         "no-op same verison migration",
-			fromVersion:  "1.1.3",
-			toVersion:    "1.1.3",
+			name:         "no-op same version migration",
+			fromVersion:  "1.3.1",
+			toVersion:    "1.3.1",
 			deprecations: true,
 			startCorefile: `.:53 {
     errors
@@ -200,7 +200,7 @@ mystub-2.example.org {
         fallthrough in-addr.arpa ip6.arpa
     }
     prometheus :9153
-    proxy example.org 1.2.3.4:53
+    proxy . /etc/resolv.conf
     cache 30
     loop
     reload
@@ -216,7 +216,7 @@ mystub-2.example.org {
         fallthrough in-addr.arpa ip6.arpa
     }
     prometheus :9153
-    proxy example.org 1.2.3.4:53
+    proxy . /etc/resolv.conf
     cache 30
     loop
     reload
@@ -290,7 +290,7 @@ func TestDeprecated(t *testing.T) {
 	}
 	expected = []Notice{}
 	if len(result) != len(expected) {
-		t.Fatalf("expected to find %v notifications in noop upgrade; got %v", len(expected), len(result))
+		t.Fatalf("expected to find %v notifications in no-op upgrade; got %v", len(expected), len(result))
 	}
 }
 
