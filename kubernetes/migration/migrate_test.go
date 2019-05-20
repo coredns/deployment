@@ -482,7 +482,7 @@ stubzone.org:53 {
 	}
 }
 
-func TestValidateVersions(t *testing.T) {
+func TestValidUpMigration(t *testing.T) {
 	testCases := []struct {
 		from      string
 		to        string
@@ -498,6 +498,32 @@ func TestValidateVersions(t *testing.T) {
 
 	for _, tc := range testCases {
 		err := validUpMigration(tc.from, tc.to)
+
+		if !tc.shouldErr && err != nil {
+			t.Errorf("expected '%v' to '%v' to be valid versions.", tc.from, tc.to)
+		}
+		if tc.shouldErr && err == nil {
+			t.Errorf("expected '%v' to '%v' to be invalid versions.", tc.from, tc.to)
+		}
+	}
+}
+
+func TestValidDownMigration(t *testing.T) {
+	testCases := []struct {
+		from      string
+		to        string
+		shouldErr bool
+	}{
+		{"1.3.1", "1.3.1", true},
+		{"1.3.1", "1.5.0", true},
+		{"1.5.0", "1.3.1", false},
+		{"banana", "1.5.0", true},
+		{"1.3.1", "apple", true},
+		{"banana", "apple", true},
+	}
+
+	for _, tc := range testCases {
+		err := validDownMigration(tc.from, tc.to)
 
 		if !tc.shouldErr && err != nil {
 			t.Errorf("expected '%v' to '%v' to be valid versions.", tc.from, tc.to)
