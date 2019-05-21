@@ -27,6 +27,7 @@ func CorefileTool() *cobra.Command {
 		`),
 	}
 	rootCmd.AddCommand(NewMigrateCmd())
+	rootCmd.AddCommand(NewDowngradeCmd())
 	rootCmd.AddCommand(NewDefaultCmd())
 	rootCmd.AddCommand(NewDeprecatedCmd())
 	rootCmd.AddCommand(NewUnsupportedCmd())

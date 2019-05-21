@@ -40,7 +40,7 @@ corefile-tool unsupported --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile`,
 	return unsupportedCmd
 }
 
-// unsupportedCorefileFromPath takes the path where the Corefile is located and returns a list of  plugins
+// unsupportedCorefileFromPath takes the path where the Corefile is located and returns a list of plugins
 // that have been removed.
 func unsupportedCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string) ([]migration.Notice, error) {
 	fileBytes, err := getCorefileFromPath(corefilePath)
