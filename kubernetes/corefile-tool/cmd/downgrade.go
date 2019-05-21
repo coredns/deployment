@@ -8,23 +8,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// NewMigrateCmd represents the migrate command
-func NewMigrateCmd() *cobra.Command {
+// NewDowngradeCmd represents the downgrade command
+func NewDowngradeCmd() *cobra.Command {
 	var migrateCmd = &cobra.Command{
-		Use:   "migrate",
-		Short: "Migrate your CoreDNS corefile",
-		Example: `# Migrate CoreDNS from v1.4.0 to v1.5.0 and handle deprecations . 
-corefile-tool migrate --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile  --deprecations true
-
-# Migrate CoreDNS from v1.2.2 to v1.3.1 and do not handle deprecations .
-corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --deprecations false`,
+		Use:   "downgrade",
+		Short: "Downgrade your CoreDNS corefile to a previous version",
+		Example: `# Downgrade CoreDNS from v1.5.0 to v1.4.0. 
+corefile-tool downgrade --from 1.5.0 --to 1.4.0 --corefile /path/to/Corefile`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			from, _ := cmd.Flags().GetString("from")
 			to, _ := cmd.Flags().GetString("to")
 			corefile, _ := cmd.Flags().GetString("corefile")
-			deprecations, _ := cmd.Flags().GetBool("deprecations")
 
-			migrated, err := migrateCorefileFromPath(from, to, corefile, deprecations)
+			migrated, err := downgradeCorefileFromPath(from, to, corefile)
 			if err != nil {
 				return fmt.Errorf("error while migration: %v \n", err)
 			}
@@ -43,13 +39,13 @@ corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --de
 	return migrateCmd
 }
 
-// migrateCorefileFromPath takes the path where the Corefile is located and migrates the Corefile to the
+// downgradeCorefileFromPath takes the path where the Corefile is located and downgrades the Corefile to the
 // desrired version.
-func migrateCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string, deprecations bool) (string, error) {
+func downgradeCorefileFromPath(fromCoreDNSVersion, toCoreDNSVersion, corefilePath string) (string, error) {
 	fileBytes, err := getCorefileFromPath(corefilePath)
 	if err != nil {
 		return "", err
 	}
 	corefileStr := string(fileBytes)
-	return migration.Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr, deprecations)
+	return migration.MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr)
 }

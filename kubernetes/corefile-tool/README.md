@@ -12,6 +12,7 @@ Usage:
     corefile-tool default --corefile <path> [--k8sversion <k8s-ver>]
     corefile-tool deprecated --from <coredns-ver> --to <coredns-ver> --corefile <path>
     corefile-tool migrate --from <coredns-ver> --to <coredns-ver> --corefile <path> [--deprecations <true|false>]
+    corefile-tool downgrade --from <coredns-ver> --to <coredns-ver> --corefile <path>
     corefile-tool released --dockerImageId <id>
     corefile-tool unsupported --from <coredns-ver> --to <coredns-ver> --corefile <path>
     corefile-tool validversions
@@ -26,7 +27,9 @@ The following operations are supported:
 
 - `deprecated`: returns a list of plugins/options in the Corefile that have been deprecated, removed, ignored or is a new default plugin/option.
 
-- `migrate`: updates your CoreDNS corefile to be compatible with the `-to` version. Setting the `--deprecations` flag to `true` will migrate plugins/options as soon as they are announced as deprecated.  Setting the `--deprecations` flag to `false` will migrate plugins/options only once they are removed (or made a no-op).  The default is `false`. 
+- `migrate`: updates your CoreDNS corefile to be compatible with the `-to` version. Setting the `--deprecations` flag to `true` will migrate plugins/options as soon as they are announced as deprecated.  Setting the `--deprecations` flag to `false` will migrate plugins/options only once they are removed (or made a no-op).  The default is `false`.
+
+- `downgrade` : downgrades your CoreDNS corefile to be compatible with the `-to` version. It will not restore plugins/options that might have been removed or altered during an upward migration.
 
 - `released`: determines if the `--dockerImageID` was an official CoreDNS release or not.  Only official releases of CoreDNS are supported by the tool.
 
@@ -62,5 +65,9 @@ corefile-tool migrate --from 1.4.0 --to 1.5.0 --corefile /path/to/Corefile  --de
 # Migrate CoreDNS from v1.2.2 to v1.3.1 and do not also migrate all the deprecations 
 # that are present in the current Corefile.
 corefile-tool migrate --from 1.2.2 --to 1.3.1 --corefile /path/to/Corefile  --deprecations false
+```
+```bash
+# Downgrade CoreDNS from v1.5.0 to v1.4.0
+corefile-tool downgrade --from 1.5.0 --to 1.4.0 --corefile /path/to/Corefile
 ```
 
