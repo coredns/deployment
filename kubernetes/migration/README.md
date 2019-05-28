@@ -21,12 +21,15 @@ Plugin "baz" is unsupported by this migration tool in <version>.
 
 ## Functions
 
+### func Deprecated
+
 `Deprecated(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error)`
 
 Deprecated returns a list of deprecation notices affecting the given Corefile.  Notices are returned for
 any deprecated, removed, or ignored plugins/options present in the Corefile.  Notices are also returned for
-any new default plugins that would be added in a migration.  Notices
+any new default plugins that would be added in a migration.
 
+### func Migrate
 
 `Migrate(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string, deprecations bool) (string, error)`
 
@@ -39,6 +42,8 @@ must be >= the _from_ version. It will:
   * If deprecations is true, deprecated plugins/options will be migrated as soon as they are deprecated.
   * If deprecations is false, deprecated plugins/options will be migrated only once they become removed or ignored.
 
+### func MigrateDown
+
 `MigrateDown(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) (string, error)`
 
 MigrateDown returns a downward migrated version of the Corefile, or an error if it cannot. The _to_ version 
@@ -47,6 +52,8 @@ must be <= the _from_ version.
     version when downgrading.
   * It will not restore plugins/options that might have been removed or altered during an upward migration. 
 
+### func Unsupported
+
 `Unsupported(fromCoreDNSVersion, toCoreDNSVersion, corefileStr string) ([]Notice, error)`
 
 Unsupported returns a list Notices for plugins/options that are unhandled by this migration tool,
@@ -54,16 +61,22 @@ but may still be valid in CoreDNS.  Currently, only a subset of plugins included
 by this tool.
 
 
+### func Default
+
 `Default(k8sVersion, corefileStr string) bool`
 
 Default returns true if the Corefile is the default for a given version of Kubernetes.
 Or, if k8sVersion is empty, Default returns true if the Corefile is the default for any version of Kubernetes.
 
 
+### func Released
+
 `Released(dockerImageSHA string) bool`
 
 Released returns true if dockerImageSHA matches any released image of CoreDNS.
 
+
+### func ValidVersions
 
 `ValidVersions() []string`
 
