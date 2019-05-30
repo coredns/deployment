@@ -40,9 +40,9 @@ func TestCorefile(t *testing.T) {
 }
 
 func TestServer_FindMatch(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		server *Server
-		match bool
+		match  bool
 	}{
 		{server: &Server{DomPorts: []string{".:53"}}, match: true},
 		{server: &Server{DomPorts: []string{".:54"}}, match: false},
@@ -67,16 +67,16 @@ func TestServer_FindMatch(t *testing.T) {
 }
 
 func TestPlugin_FindMatch(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		plugin *Plugin
-		match bool
+		match  bool
 	}{
 		{plugin: &Plugin{Name: "plugin1", Args: []string{}}, match: true},
-		{plugin: &Plugin{Name: "plugin2", Args: []string{"1","1.5","2"}}, match: true},
-		{plugin: &Plugin{Name: "plugin3", Args: []string{"1","2","3","4"}}, match: true},
+		{plugin: &Plugin{Name: "plugin2", Args: []string{"1", "1.5", "2"}}, match: true},
+		{plugin: &Plugin{Name: "plugin3", Args: []string{"1", "2", "3", "4"}}, match: true},
 		{plugin: &Plugin{Name: "plugin1", Args: []string{"a"}}, match: false},
-		{plugin: &Plugin{Name: "plugin2", Args: []string{"1","1.5","b"}}, match: false},
-		{plugin: &Plugin{Name: "plugin3", Args: []string{"a","2","3","4"}}, match: false},
+		{plugin: &Plugin{Name: "plugin2", Args: []string{"1", "1.5", "b"}}, match: false},
+		{plugin: &Plugin{Name: "plugin3", Args: []string{"a", "2", "3", "4"}}, match: false},
 		{plugin: &Plugin{Name: "plugin4", Args: []string{}}, match: false},
 	}
 
@@ -94,16 +94,16 @@ func TestPlugin_FindMatch(t *testing.T) {
 }
 
 func TestOption_FindMatch(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		option *Plugin
-		match bool
+		match  bool
 	}{
 		{option: &Plugin{Name: "option1", Args: []string{}}, match: true},
-		{option: &Plugin{Name: "option2", Args: []string{"1","1.5","2"}}, match: true},
-		{option: &Plugin{Name: "option3", Args: []string{"1","2","3","4"}}, match: true},
+		{option: &Plugin{Name: "option2", Args: []string{"1", "1.5", "2"}}, match: true},
+		{option: &Plugin{Name: "option3", Args: []string{"1", "2", "3", "4"}}, match: true},
 		{option: &Plugin{Name: "option1", Args: []string{"a"}}, match: false},
-		{option: &Plugin{Name: "option2", Args: []string{"1","1.5","b"}}, match: false},
-		{option: &Plugin{Name: "option3", Args: []string{"a","2","3","4"}}, match: false},
+		{option: &Plugin{Name: "option2", Args: []string{"1", "1.5", "b"}}, match: false},
+		{option: &Plugin{Name: "option3", Args: []string{"a", "2", "3", "4"}}, match: false},
 		{option: &Plugin{Name: "option4", Args: []string{}}, match: false},
 	}
 

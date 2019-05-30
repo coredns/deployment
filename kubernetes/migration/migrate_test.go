@@ -1,7 +1,6 @@
 package migration
 
 import (
-	"github.com/andreyvit/diff"
 	"testing"
 )
 
@@ -236,7 +235,7 @@ mystub-2.example.org {
 			}
 
 			if result != testCase.expectedCorefile {
-				t.Errorf("expected -> got diffs:\n%v", diff.LineDiff(testCase.expectedCorefile, result))
+				t.Errorf("expected != result\n%v\n%v", testCase.expectedCorefile, result)
 			}
 		})
 	}
@@ -338,7 +337,7 @@ func TestMigrateDown(t *testing.T) {
 			}
 
 			if result != testCase.expectedCorefile {
-				t.Errorf("expected -> got diffs:\n%v", diff.LineDiff(testCase.expectedCorefile, result))
+				t.Errorf("expected != result:\n%v\n%v", testCase.expectedCorefile, result)
 			}
 		})
 	}
