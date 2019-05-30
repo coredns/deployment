@@ -1,8 +1,9 @@
 package corefile
 
 import (
-	"github.com/mholt/caddy"
 	"strings"
+
+	"github.com/coredns/deployment/kubernetes/migration/caddy"
 )
 
 type Corefile struct {
@@ -27,7 +28,7 @@ type Option struct {
 
 func New(s string) (*Corefile, error) {
 	c := Corefile{}
-	cc := caddy.NewTestController("migration", s)
+	cc := caddy.NewDispenser("migration", strings.NewReader(s))
 	depth := 0
 	var cSvr *Server
 	var cPlg *Plugin
