@@ -4,13 +4,14 @@
 
 show_help () {
 cat << USAGE
-usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -t YAML-TEMPLATE ]
+usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [-c "Options specific to the Kubernetes zone"] [ -t YAML-TEMPLATE ]
 
     -r : Define a reverse zone for the given CIDR. You may specifcy this option more
          than once to add multiple reverse zones. If no reverse CIDRs are defined,
          then the default is to handle all reverse zones (i.e. in-addr.arpa and ip6.arpa)
     -i : Specify the cluster DNS IP address. If not specificed, the IP address of
          the existing "kube-dns" service is used, if present.
+    -c : Defines specific a specific configuration for the kubernetes zone. Defaults to "pods insecure".
     -s : Skips the translation of kube-dns configmap to the corresponding CoreDNS Corefile configuration.
 
 USAGE
@@ -87,7 +88,7 @@ function kube-dns-stubdomains-to-coredns {
 
 
 # Get Opts
-while getopts "hsr:i:d:t:k:" opt; do
+while getopts "hsr:i:d:c:t:k:" opt; do
     case "$opt" in
     h)  show_help
         ;;
@@ -98,6 +99,8 @@ while getopts "hsr:i:d:t:k:" opt; do
     i)  CLUSTER_DNS_IP=$OPTARG
         ;;
     d)  CLUSTER_DOMAIN=$OPTARG
+        ;;
+    c)  KUBERNETES_CONFIG=$OPTARG
         ;;
     t)  YAML_TEMPLATE=$OPTARG
         ;;
@@ -116,6 +119,9 @@ if [[ -z $CLUSTER_DNS_IP ]]; then
       exit 2
   fi
 fi
+if [[ -z $KUBERNETES_CONFIG ]]; then
+  KUBERNETES_CONFIG="pods insecure"
+fi
 
 if [[ "${SKIP}" -ne 1 ]] ; then
     translate-kube-dns-configmap
@@ -129,4 +135,5 @@ sed -e "s/CLUSTER_DNS_IP/$CLUSTER_DNS_IP/g" \
     -e "s@STUBDOMAINS@${STUBDOMAINS//$orig/$replace}@g" \
     -e "s@FEDERATIONS@${FEDERATIONS//$orig/$replace}@g" \
     -e "s/UPSTREAMNAMESERVER/$UPSTREAM/g" \
+    -e "s@KUBERNETES_CONFIG@${KUBERNETES_CONFIG}@g" \
     "${YAML_TEMPLATE}"

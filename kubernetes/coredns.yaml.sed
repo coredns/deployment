@@ -57,7 +57,7 @@ data:
         health
         ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
-          pods insecure
+          KUBERNETES_CONFIG
           fallthrough in-addr.arpa ip6.arpa
         }FEDERATIONS
         prometheus :9153
