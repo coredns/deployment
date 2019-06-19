@@ -347,8 +347,10 @@ func Default(k8sVersion, corefileStr string) bool {
 	}
 NextVersion:
 	for _, v := range Versions {
-		if k8sVersion != "" && k8sVersion != v.k8sRelease {
-			continue
+		for _, release := range v.k8sReleases {
+			if k8sVersion != "" && k8sVersion != release {
+				continue
+			}
 		}
 		defCf, err := corefile.New(v.defaultConf)
 		if err != nil {
