@@ -25,7 +25,7 @@ type option struct {
 }
 
 type release struct {
-	k8sRelease     []string
+	k8sReleases    []string
 	nextVersion    string
 	priorVersion   string
 	dockerImageSHA string
@@ -37,7 +37,7 @@ type release struct {
 	//   server blocks, etc). e.g. Splitting plugins out into separate server blocks.
 	postProcess corefileAction
 
-	// defaultConf holds the default Corefile template packaged with the corresponding k8sRelease.
+	// defaultConf holds the default Corefile template packaged with the corresponding k8sReleases.
 	// Wildcards are used for fuzzy matching:
 	//   "*"   matches exactly one token
 	//   "***" matches 0 all remaining tokens on the line
@@ -262,7 +262,7 @@ var Versions = map[string]release{
 	"1.3.1": {
 		nextVersion:    "1.4.0",
 		priorVersion:   "1.3.0",
-		k8sRelease:     []string{"1.15", "1.14"},
+		k8sReleases:    []string{"1.15", "1.14"},
 		dockerImageSHA: "02382353821b12c21b062c59184e227e001079bb13ebd01f9d3270ba0fcbf1e4",
 		defaultConf: `.:53 {
     errors
@@ -438,7 +438,7 @@ var Versions = map[string]release{
 	"1.2.6": {
 		nextVersion:    "1.3.0",
 		priorVersion:   "1.2.5",
-		k8sRelease:     []string{"1.13"},
+		k8sReleases:    []string{"1.13"},
 		dockerImageSHA: "81936728011c0df9404cb70b95c17bbc8af922ec9a70d0561a5d01fefa6ffa51",
 		defaultConf: `.:53 {
     errors
@@ -730,7 +730,7 @@ var Versions = map[string]release{
 	"1.2.2": {
 		nextVersion:    "1.2.3",
 		priorVersion:   "1.2.1",
-		k8sRelease:     []string{"1.12"},
+		k8sReleases:    []string{"1.12"},
 		dockerImageSHA: "3e2be1cec87aca0b74b7668bbe8c02964a95a402e45ceb51b2252629d608d03a",
 		defaultConf: `.:53 {
     errors
@@ -1022,7 +1022,7 @@ var Versions = map[string]release{
 	},
 	"1.1.3": {
 		nextVersion:    "1.1.4",
-		k8sRelease:     []string{"1.11"},
+		k8sReleases:    []string{"1.11"},
 		dockerImageSHA: "a5dd18e048983c7401e15648b55c3ef950601a86dd22370ef5dfc3e72a108aaa",
 		defaultConf: `.:53 {
     errors

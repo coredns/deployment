@@ -347,7 +347,7 @@ func Default(k8sVersion, corefileStr string) bool {
 	}
 NextVersion:
 	for _, v := range Versions {
-		for _, release := range v.k8sRelease {
+		for _, release := range v.k8sReleases {
 			if k8sVersion != "" && k8sVersion != release {
 				continue
 			}
