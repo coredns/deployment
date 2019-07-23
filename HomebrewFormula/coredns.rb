@@ -3,72 +3,37 @@ require "language/go"
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io"
-  url "https://github.com/coredns/coredns/archive/v0.9.10.tar.gz"
-  sha256 "655ad5ae4a819bf1237ea570a941bf205252c16cdae9d253a832085b26888c33"
+  url "https://github.com/coredns/coredns/releases/download/v1.5.2/coredns_1.5.2_darwin_amd64.tgz"
+  version "1.5.2"
+  sha256 "195c73f6ccbb013b7a326d46cd55c5e0aaa66914cfab97b2030c67ddf2d7b25a"
   head "https://github.com/coredns/coredns.git"
 
   def default_coredns_config; <<~EOS
-    . {
-      hosts {
-        fallthrough
-      }
-      proxy . 8.8.8.8:53 8.8.4.4:53 {
-        protocol https_google
-      }
-      cache
-      errors
+    .:53 {
+        forward . tls://1.1.1.1 tls://1.0.0.1 {
+            tls_servername cloudflare-dns.com
+            health_check 5s
+            expire 60s
+        }
+        errors
+        cache 30
+        bind 127.0.0.1 ::1
     }
     EOS
   end
 
-  depends_on "go" => :build
-
-  go_resource "github.com/mholt/caddy" do
-    url "https://github.com/mholt/caddy.git",
-      :revision => "fc75527eb5ea9d0252bb3079a0137dbbfb754790"
-  end
-
-  go_resource "github.com/miekg/dns" do
-    url "https://github.com/miekg/dns.git",
-      :revision => "822ae18e7187e1bbde923a37081f6c1b8e9ba68a"
-  end
-
-  go_resource "golang.org/x/text" do
-    url "https://go.googlesource.com/text.git",
-      :revision => "c01e4764d870b77f8abe5096ee19ad20d80e8075"
-  end
-
-  go_resource "golang.org/x/net" do
-    url "https://go.googlesource.com/net.git",
-      :revision => "5561cd9b4330353950f399814f427425c0a26fd2"
-  end
-
   def install
-    ENV["GOPATH"] = buildpath
-    ENV["GOOS"] = "darwin"
-    ENV["GOARCH"] = Hardware::CPU.is_64_bit? ? "amd64" : "386"
-
-    (buildpath/"src/github.com/coredns/coredns").install buildpath.children
-    Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/coredns/coredns" do
-      system "go", "build", "-ldflags",
-        "-X github.com/coredns/coredns/coremain.gitTag=#{version}",
-        "-o", sbin/"coredns"
-    end
-
     (buildpath/"Corefile.example").write default_coredns_config
     (etc/"coredns").mkpath
     etc.install "Corefile.example" => "coredns/Corefile"
+    bin.install "coredns"
   end
 
   def caveats; <<~EOS
     To configure coredns, take the default configuration at
     #{etc}/coredns/Corefile and edit to taste.
 
-    By default it is configured to proxy all dns requests
-    through Google's DNS-over-HTTPS:
-    (https://developers.google.com/speed/public-dns/docs/dns-over-https).
+    By default it is configured to forward all requests to Cloudflare's DNS-over-TLS servers.
     EOS
   end
 
@@ -83,7 +48,7 @@ class Coredns < Formula
     <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-    <string>#{opt_sbin}/coredns</string>
+    <string>#{opt_bin}/coredns</string>
     <string>-conf</string>
     <string>#{etc}/coredns/Corefile</string>
     </array>
@@ -103,6 +68,6 @@ class Coredns < Formula
   end
 
   test do
-    assert_match "CoreDNS-#{version}", shell_output("#{sbin}/coredns -version")
+    assert_match "CoreDNS-#{version}", shell_output("#{bin}/coredns -version")
   end
 end
