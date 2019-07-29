@@ -54,6 +54,11 @@ jobs:
           command : |
             mkdir -p ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci
             git clone https://github.com/${CIRCLE_PROJECT_USERNAME}/ci ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci
+      - run:
+        name: Clone CoreDNS repo
+          command: |
+            mkdir -p ~/go/src/${CIRCLE_PROJECT_USERNAME}/coredns
+            git clone https://github.com/${CIRCLE_PROJECT_USERNAME}/coredns ~/go/src/${CIRCLE_PROJECT_USERNAME}/coredns
       - <<: *setupKubernetes
       - <<: *buildCoreDNSImage
       - run:
