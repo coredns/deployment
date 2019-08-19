@@ -1,9 +1,9 @@
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io"
-  url "https://github.com/coredns/coredns/releases/download/v1.5.2/coredns_1.5.2_darwin_amd64.tgz"
-  version "1.5.2"
-  sha256 "195c73f6ccbb013b7a326d46cd55c5e0aaa66914cfab97b2030c67ddf2d7b25a"
+  url "https://github.com/coredns/coredns/releases/download/v1.6.2/coredns_1.6.2_darwin_amd64.tgz"
+  version "1.6.2"
+  sha256 "23a41ee639b3214e30e1600227a0fecbf482654cb0e470e0c266e5113b304e9f"
   head "https://github.com/coredns/coredns.git"
 
   def default_coredns_config; <<~EOS
