@@ -20,28 +20,14 @@ integrationDefaults: &integrationDefaults
     image: ubuntu-1604:201903-01
   working_directory: ~/go/src/${CIRCLE_PROJECT_USERNAME}/deployment
   environment:
-    - K8S_VERSION: v1.13.3
-    - KUBECONFIG: /home/circleci/.kube/config
-    - MINIKUBE_VERSION: v0.33.1
-    - MINIKUBE_WANTUPDATENOTIFICATION: false
-    - MINIKUBE_WANTREPORTERRORPROMPT: false
-    - CHANGE_MINIKUBE_NONE_USER: true
-    - MINIKUBE_HOME: /home/circleci
+    - K8S_VERSION: v1.15.3
+    - KUBECONFIG: /home/circleci/.kube/kind-config-kind
+    - KIND_VERSION: v0.5.1
 
 setupKubernetes: &setupKubernetes
   - run:
       name: Setup Kubernetes
-      command: ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci/build/kubernetes/minikube_setup.sh
-
-buildCoreDNSImage: &buildCoreDNSImage
-  - run:
-      name: Build latest CoreDNS Docker image
-      command: |
-        cd ~/go/src/${CIRCLE_PROJECT_USERNAME}/coredns
-        make coredns SYSTEM="GOOS=linux" && \
-        docker build -t coredns . && \
-        docker tag coredns localhost:5000/coredns && \
-        docker push localhost:5000/coredns
+      command: ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci/build/kubernetes/k8s_setup.sh
 
 jobs:
   k8s-deployment-tests:
@@ -60,7 +46,6 @@ jobs:
             mkdir -p ~/go/src/${CIRCLE_PROJECT_USERNAME}/coredns
             git clone https://github.com/${CIRCLE_PROJECT_USERNAME}/coredns ~/go/src/${CIRCLE_PROJECT_USERNAME}/coredns
       - <<: *setupKubernetes
-      - <<: *buildCoreDNSImage
       - run:
           name: Run Kubernetes deployment tests
           command: |
