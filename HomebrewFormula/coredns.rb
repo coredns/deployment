@@ -11,9 +11,7 @@ class Coredns < Formula
       hosts {
         fallthrough
       }
-      proxy . 8.8.8.8:53 8.8.4.4:53 {
-        protocol https_google
-      }
+      forward . https://8.8.8.8:53 https://8.8.4.4:53
       cache
       errors
     }
@@ -48,7 +46,7 @@ class Coredns < Formula
     <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-    <string>#{opt_sbin}/coredns</string>
+    <string>#{opt_bin}/coredns</string>
     <string>-conf</string>
     <string>#{etc}/coredns/Corefile</string>
     </array>
@@ -68,6 +66,6 @@ class Coredns < Formula
   end
 
   test do
-    assert_match "CoreDNS-#{version}", shell_output("#{sbin}/coredns -version")
+    assert_match "CoreDNS-#{version}", shell_output("#{bin}/coredns -version")
   end
 end
