@@ -6,7 +6,7 @@ show_help () {
 cat << USAGE
 usage: $0  [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ]
 
-    -i : Specify the cluster DNS IP address. If not specificed, the IP address of
+    -i : Specify the cluster DNS IP address. If not specified, the IP address of
          the existing "kube-dns" service is used, if present.
     -d : Specify the Cluster Domain. Default is "cluster.local"
 USAGE
