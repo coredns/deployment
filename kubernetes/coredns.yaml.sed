@@ -54,7 +54,9 @@ data:
   Corefile: |
     .:53 {
         errors
-        health
+        health {
+          lameduck 12s
+        }
         ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
