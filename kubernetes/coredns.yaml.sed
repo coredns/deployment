@@ -107,7 +107,7 @@ spec:
                 - key: k8s-app
                   operator: In
                   values: ["kube-dns"]
-                topologyKey: kubernetes.io/hostname
+              topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
         image: coredns/coredns:1.6.4
