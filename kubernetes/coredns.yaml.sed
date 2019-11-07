@@ -101,7 +101,7 @@ spec:
         beta.kubernetes.io/os: linux
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
             podAffinityTerm:
               labelSelector:
@@ -112,7 +112,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.6.4
+        image: coredns/coredns:1.6.5
         imagePullPolicy: IfNotPresent
         resources:
           limits:
