@@ -102,8 +102,6 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
               labelSelector:
                 matchExpressions:
                 - key: k8s-app
