@@ -102,12 +102,12 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-              labelSelector:
-                matchExpressions:
-                - key: k8s-app
-                  operator: In
-                  values: ["kube-dns"]
-              topologyKey: kubernetes.io/hostname
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: ["kube-dns"]
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
         image: coredns/coredns:1.6.5
