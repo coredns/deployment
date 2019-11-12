@@ -55,7 +55,7 @@ data:
     .:53 {
         errors
         health {
-          lameduck 12s
+          lameduck 5s
         }
         ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
