@@ -54,7 +54,9 @@ data:
   Corefile: |
     .:53 {
         errors
-        health
+        health {
+          lameduck 5s
+        }
         ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           pods insecure
@@ -77,7 +79,9 @@ metadata:
     k8s-app: kube-dns
     kubernetes.io/name: "CoreDNS"
 spec:
-  replicas: 2
+  # replicas: not specified here:
+  # 1. Default is 1.
+  # 2. Will be tuned in real time if DNS horizontal auto-scaling is turned on.
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -97,9 +101,18 @@ spec:
           operator: "Exists"
       nodeSelector:
         beta.kubernetes.io/os: linux
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: ["kube-dns"]
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.6.2
+        image: coredns/coredns:1.6.5
         imagePullPolicy: IfNotPresent
         resources:
           limits:
