@@ -168,7 +168,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kube-dns
+  name: coredns
   namespace: kube-system
   annotations:
     prometheus.io/port: "9153"
