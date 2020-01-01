@@ -110,7 +110,7 @@ if [[ -z $REVERSE_CIDRS ]]; then
 fi
 if [[ -z $CLUSTER_DNS_IP ]]; then
   # Default IP to kube-dns IP
-  CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system kube-dns -o jsonpath="{.spec.clusterIP}")
+  CLUSTER_DNS_IP=$(kubectl get service --namespace kube-system coredns -o jsonpath="{.spec.clusterIP}")
   if [ $? -ne 0 ]; then
       >&2 echo "Error! The IP address for DNS service couldn't be determined automatically. Please specify the DNS-IP with the '-i' option."
       exit 2
