@@ -99,7 +99,7 @@ spec:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -111,7 +111,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.6.6
+        image: coredns/coredns:1.6.7
         imagePullPolicy: IfNotPresent
         resources:
           limits:
