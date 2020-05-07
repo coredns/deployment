@@ -101,14 +101,16 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: k8s-app
-                operator: In
-                values: ["kube-dns"]
-            topologyKey: kubernetes.io/hostname
+         podAntiAffinity:
+           preferredDuringSchedulingIgnoredDuringExecution:
+           - weight: 100
+             podAffinityTerm:
+               labelSelector:
+                 matchExpressions:
+                   - key: k8s-app
+                     operator: In
+                     values: ["kube-dns"]
+               topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
         image: coredns/coredns:1.6.7
