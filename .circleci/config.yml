@@ -21,9 +21,9 @@ integrationDefaults: &integrationDefaults
     image: ubuntu-1604:201903-01
   working_directory: ~/go/src/${CIRCLE_PROJECT_USERNAME}/deployment
   environment:
-    - K8S_VERSION: v1.15.3
+    - K8S_VERSION: v1.18.2
     - KUBECONFIG: /home/circleci/.kube/kind-config-kind
-    - KIND_VERSION: v0.5.1
+    - KIND_VERSION: v0.8.1
 
 setupKubernetes: &setupKubernetes
   - run:
