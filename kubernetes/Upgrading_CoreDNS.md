@@ -159,7 +159,7 @@ coredns-7d667b54cd-bfk6n   0/1     CrashLoopBackOff   1          12s
 The new Pods are crashing, but one of the original Pods is left running, so the DNS service is not down (although, it is at 1/2 capacity). To see why the new Pods are crashing we can look at the logs...
 
 ```
-CTOs-MBP:~ cohaver$ kubectl -n kube-system log coredns-7d667b54cd-4bqpf
+CTOs-MBP:~ cohaver$ kubectl -n kube-system logs coredns-7d667b54cd-4bqpf
 2019/02/07 18:50:31 plugin/startup: this plugin has been deprecated
 ```
 
@@ -181,7 +181,7 @@ Once the crashing Pods are deleted, the Deployment spins them back up again with
 Just validate, we can see that the logs for the new Pods report they are running 1.1.0...
 
 ```
-CTOs-MBP:~ cohaver$ kubectl -n kube-system log coredns-7d667b54cd-9d6cl
+CTOs-MBP:~ cohaver$ kubectl -n kube-system logs coredns-7d667b54cd-9d6cl
 .:53
 2019/02/07 18:58:44 [INFO] CoreDNS-1.1.0
 2019/02/07 18:58:44 [INFO] linux/amd64, go1.10, c8d91500
