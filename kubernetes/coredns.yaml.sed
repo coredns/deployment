@@ -60,7 +60,7 @@ data:
         ready
         kubernetes CLUSTER_DOMAIN REVERSE_CIDRS {
           fallthrough in-addr.arpa ip6.arpa
-        }FEDERATIONS
+        }
         prometheus :9153
         forward . UPSTREAMNAMESERVER
         cache 30
