@@ -57,7 +57,7 @@ data:
         }
         prometheus :9153
         forward . UPSTREAMNAMESERVER {
-          max_concurrent 150
+          max_concurrent 1000
         }
         cache 30
         loop
