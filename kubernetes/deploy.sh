@@ -43,7 +43,9 @@ function kube-dns-stubdomains-to-coredns {
       errors
       cache 30
       loop
-      forward . SD_DESTINATION
+      forward . SD_DESTINATION {
+        max_concurrent 1000
+      }
     }'
 
   function dequote {
