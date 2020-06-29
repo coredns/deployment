@@ -56,7 +56,9 @@ data:
           fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153
-        forward . UPSTREAMNAMESERVER
+        forward . UPSTREAMNAMESERVER {
+          max_concurrent 1000
+        }
         cache 30
         loop
         reload
@@ -107,7 +109,7 @@ spec:
                topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.6.7
+        image: coredns/coredns:1.7.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
