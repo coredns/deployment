@@ -33,7 +33,7 @@ This formula has the following baked in:
 
 ### Configuring your deployment
 
-You can use the formulas above to estimate the required amount of memory needed by CoreDNS in your cluster, and adjust adjust the resource memory request/limit in the CoreDNS deployment accordingly.
+You can use the formulas above to estimate the required amount of memory needed by CoreDNS in your cluster, and adjust the resource memory request/limit in the CoreDNS deployment accordingly.
 
 ## CPU and QPS
 
