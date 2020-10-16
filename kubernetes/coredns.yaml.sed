@@ -15,7 +15,6 @@ rules:
   - ""
   resources:
   - endpoints
-  - endpointslice
   - services
   - pods
   - namespaces
