@@ -109,7 +109,7 @@ spec:
                topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.7.0
+        image: coredns/coredns:1.8.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
