@@ -2,19 +2,16 @@
 
 [CoreDNS](https://coredns.io/) is a DNS server that chains plugins and provides DNS Services
 
-## DEPRECATION NOTICE
-
-This chart is deprecated and no longer supported.
-
 # TL;DR;
 
 ```console
-$ helm install --name coredns --namespace=kube-system stable/coredns
+$ helm repo add coredns https://raw.github.com/coredns/deployment/gh-pages/
+$ helm install coredns --namespace=kube-system coredns/coredns
 ```
 
 ## Introduction
 
-This chart bootstraps a [CoreDNS](https://github.com/coredns/coredns) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager. This chart will provide DNS Services and can be deployed in multiple configuration to support various scenarios listed below:
+This chart bootstraps a [CoreDNS](https://github.com/coredns/coredns) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager version 3+. This chart will provide DNS Services and can be deployed in multiple configuration to support various scenarios listed below:
 
  - CoreDNS as a cluster dns service and a drop-in replacement for Kube/SkyDNS. This is the default mode and CoreDNS is deployed as cluster-service in kube-system namespace. This mode is chosen by setting `isClusterService` to true.
  - CoreDNS as an external dns service. In this mode CoreDNS is deployed as any kubernetes app in user specified namespace. The CoreDNS service can be exposed outside the cluster by using using either the NodePort or LoadBalancer type of service. This mode is chosen by setting `isClusterService` to false.
@@ -29,7 +26,8 @@ This chart bootstraps a [CoreDNS](https://github.com/coredns/coredns) deployment
 The chart can be installed as follows:
 
 ```console
-$ helm install --name coredns --namespace=kube-system stable/coredns
+$ helm repo add coredns https://raw.github.com/coredns/deployment/gh-pages/
+$ helm install coredns --namespace=kube-system coredns/coredns
 ```
 
 The command deploys CoreDNS on the Kubernetes cluster in the default configuration. The [configuration](#configuration) section lists various ways to override default configuration during deployment.
@@ -41,7 +39,7 @@ The command deploys CoreDNS on the Kubernetes cluster in the default configurati
 To uninstall/delete the `my-release` deployment:
 
 ```console
-$ helm delete coredns
+$ helm delete coredns --namespace kube-system
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -51,7 +49,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | Parameter                               | Description                                                                           | Default                                                     |
 |:----------------------------------------|:--------------------------------------------------------------------------------------|:------------------------------------------------------------|
 | `image.repository`                      | The image repository to pull from                                                     | coredns/coredns                                             |
-| `image.tag`                             | The image tag to pull from                                                            | `v1.7.1`                                                    |
+| `image.tag`                             | The image tag to pull from                                                            | `1.8.0`                                                    |
 | `image.pullPolicy`                      | Image pull policy                                                                     | IfNotPresent                                                |
 | `replicaCount`                          | Number of replicas                                                                    | 1                                                           |
 | `resources.limits.cpu`                  | Container maximum CPU                                                                 | `100m`                                                      |
@@ -117,9 +115,10 @@ The command removes all the Kubernetes components associated with the chart and 
 See `values.yaml` for configuration notes. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install --name coredns \
+$ helm install coredns \
   --set rbac.create=false \
-    stable/coredns
+  --namespace kube-system \
+    coredns/coredns
 ```
 
 The above command disables automatic creation of RBAC rules.
@@ -127,7 +126,7 @@ The above command disables automatic creation of RBAC rules.
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install --name coredns -f values.yaml stable/coredns
+$ helm install coredns --namespace kube-system -f values.yaml coredns/coredns
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
