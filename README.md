@@ -25,6 +25,6 @@ and a small Corefile /etc/coredns.
 This repository provides helm chart repo. 
 
 ```
-helm repo add coredns https://coredns.github.io/deployment/
+helm repo add coredns https://raw.github.com/coredns/deployment/gh-pages/
 helm install coredns/coredns
 ```
