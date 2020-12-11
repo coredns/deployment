@@ -18,13 +18,10 @@ To install:
 This installs the coredns binary in /usr/bin, adds a coredns user (homedir set to /var/lib/coredns)
 and a small Corefile /etc/coredns.
 
-# Kuebernetes
+# Kubernetes
 
 ## Helm Chart
 
-This repository provides helm chart repo. 
+The repository providing the helm chart repo is available under
 
-```
-helm repo add coredns https://raw.github.com/coredns/deployment/gh-pages/
-helm install coredns/coredns
-```
+https://github.com/coredns/helm
