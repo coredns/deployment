@@ -14,14 +14,19 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - endpoints
-  - endpointslices
-  - services
-  - pods
-  - namespaces
+    - endpoints
+    - services
+    - pods
+    - namespaces
   verbs:
-  - list
-  - watch
+    - list
+    - watch
+  - discovery.k8s.io
+  resources:
+    - endpointslices
+  verbs:
+    - list
+    - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
