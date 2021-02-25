@@ -15,6 +15,7 @@ rules:
   - ""
   resources:
   - endpoints
+  - endpointslices
   - services
   - pods
   - namespaces
@@ -109,7 +110,7 @@ spec:
                topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
-        image: coredns/coredns:1.8.0
+        image: coredns/coredns:1.8.3
         imagePullPolicy: IfNotPresent
         resources:
           limits:

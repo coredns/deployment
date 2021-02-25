@@ -21,9 +21,9 @@ integrationDefaults: &integrationDefaults
     image: ubuntu-1604:201903-01
   working_directory: ~/go/src/${CIRCLE_PROJECT_USERNAME}/deployment
   environment:
-    - K8S_VERSION: v1.18.2
+    - K8S_VERSION: v1.20.2
     - KUBECONFIG: /home/circleci/.kube/kind-config-kind
-    - KIND_VERSION: v0.8.1
+    - KIND_VERSION: v0.10.0
 
 setupKubernetes: &setupKubernetes
   - run:
@@ -51,6 +51,7 @@ jobs:
           name: Run Kubernetes deployment tests
           command: |
             cd ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci/test/k8sdeployment
+            go mod download
             GO111MODULE=on go test -v ./...
 
 workflows:
