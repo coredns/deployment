@@ -1,12 +1,11 @@
 # CoreDNS version in Kubernetes
 
-CoreDNS has been shipping with Kubernetes since CoreDNS has been an Alpha feature in Version 1.9.
-
-This document helps map the CoreDNS version that has been shipped with Kubernetes since v1.9, highlighting any deprecations that have occurred since the prior Kubernetes release.
+This document records the CoreDNS version that was installed by kubeadm with each version of Kubernetes since v1.9. It also lists any CoreDNS feature deprecations between Kubernetes releases. This table should not be read as a recommendation for what version of CoreDNS to currently use per each Kubernetes release, especially for older k8s releases in this table.
 
 
-| Kubernetes Version   |      CoreDNS version      |  Changes in CoreDNS from previous release to Kubernetes |
+| Kubernetes Version   |      CoreDNS version installed by kubeadm      |  Changes in CoreDNS from previous release to Kubernetes |
 |:--------------------:|:-------------------------:|:----------|
+| v1.20              |  [v1.7.0](https://github.com/coredns/coredns/releases/tag/v1.7.0) |  |
 | v1.19                |  [v1.7.0](https://github.com/coredns/coredns/releases/tag/v1.7.0) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.9.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.7.0.md <br><br> ***---DEPRECATIONS---***  <br><br> <ul> <li>The federation plugin (which allows for v1 Kubernetes federation) has been removed.</li> <li> Many Prometheus metrics names have changed. More details in https://coredns.io/2020/06/15/coredns-1.7.0-release/#metric-changes </li> </ul> |
 | v1.18                |  [v1.6.7](https://github.com/coredns/coredns/releases/tag/v1.6.7) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.6.md <br> https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.7.md <br><br> ***---DEPRECATIONS---***  <br><br> <ul> <li>None</li> </ul> |
 | v1.17                |  [v1.6.5](https://github.com/coredns/coredns/releases/tag/v1.6.5) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.3.md <br> https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.4.md <br> https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.5.md <br><br> ***---DEPRECATIONS---***  <br><br> <ul> <li>None</li> </ul> |
