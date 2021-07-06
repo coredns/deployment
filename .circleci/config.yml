@@ -51,7 +51,7 @@ jobs:
           name: Run Kubernetes deployment tests
           command: |
             cd ~/go/src/${CIRCLE_PROJECT_USERNAME}/ci/test/k8sdeployment
-            go mod download
+            go mod tidy
             GO111MODULE=on go test -v ./...
 
 workflows:
