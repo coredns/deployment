@@ -144,6 +144,7 @@ spec:
           capabilities:
             add:
             - NET_BIND_SERVICE
+            - NET_RAW
             drop:
             - all
           readOnlyRootFilesystem: true
