@@ -180,7 +180,6 @@ metadata:
     prometheus.io/scrape: "true"
   labels:
     k8s-app: kube-dns
-    kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
 spec:
   selector:
