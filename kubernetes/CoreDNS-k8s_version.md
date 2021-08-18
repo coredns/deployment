@@ -5,7 +5,7 @@ This document records the CoreDNS version that was installed by kubeadm with eac
 
 | Kubernetes Version   |      CoreDNS version installed by kubeadm      |  Changes in CoreDNS from previous release to Kubernetes |
 |:--------------------:|:-------------------------:|:----------|
-| v1.22              |  [v1.8.4](https://github.com/coredns/coredns/releases/tag/v1.8.4) | CoreDNS must be granted list and watch permissions to EndpointSlices |
+| v1.22              |  [v1.8.4](https://github.com/coredns/coredns/releases/tag/v1.8.4) | CoreDNS must be granted list and watch access to EndpointSlices |
 | v1.21              |  [v1.8.0](https://github.com/coredns/coredns/releases/tag/v1.8.0) |  |
 | v1.20              |  [v1.7.0](https://github.com/coredns/coredns/releases/tag/v1.7.0) |  |
 | v1.19                |  [v1.7.0](https://github.com/coredns/coredns/releases/tag/v1.7.0) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.6.9.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.7.0.md <br><br> ***---DEPRECATIONS---***  <br><br> <ul> <li>The federation plugin (which allows for v1 Kubernetes federation) has been removed.</li> <li> Many Prometheus metrics names have changed. More details in https://coredns.io/2020/06/15/coredns-1.7.0-release/#metric-changes </li> </ul> |
