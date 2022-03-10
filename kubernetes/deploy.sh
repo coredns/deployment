@@ -13,7 +13,7 @@ usage: $0 [ -r REVERSE-CIDR ] [ -i DNS-IP ] [ -d CLUSTER-DOMAIN ] [ -m COREDNS_I
          the existing "kube-dns" service is used, if present.
     -s : Skips the translation of kube-dns configmap to the corresponding CoreDNS Corefile configuration.
     -m : coredns image registry (i.e. docker.io/coredns/coredns)
-    -v : coredns image tag (i.e. 1.7.0)
+    -v : coredns image tag (i.e. 1.9.0)
 
 USAGE
 exit 0
@@ -26,7 +26,7 @@ YAML_TEMPLATE="$DIR/coredns.yaml.sed"
 STUBDOMAINS=""
 UPSTREAM=\\/etc\\/resolv\.conf
 COREDNS_IMAGE="coredns/coredns"
-COREDNS_VERSION="1.7.0"
+COREDNS_VERSION="1.9.0"
 
 # Translates the kube-dns ConfigMap to equivalent CoreDNS Configuration.
 function translate-kube-dns-configmap {
