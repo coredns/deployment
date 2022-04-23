@@ -4,5 +4,7 @@ Build-Depends: debhelper (>= 9), ca-certificates, curl, dh-systemd, lsb-release,
 
 Package: coredns
 Architecture: any
+Section: net
+Priority: optional
 Description: DNS server that chains plugins
 Depends: adduser
