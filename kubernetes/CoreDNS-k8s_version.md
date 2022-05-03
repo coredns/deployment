@@ -5,6 +5,7 @@ This document records the CoreDNS version that was installed by kubeadm with eac
 
 | Kubernetes Version   |      CoreDNS version installed by kubeadm      |  Changes in CoreDNS from previous release to Kubernetes |
 |:--------------------:|:-------------------------:|:----------|
+| v1.23              |  [v1.8.6](https://github.com/coredns/coredns/releases/tag/v1.8.6) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.5.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.6.md |
 | v1.22              |  [v1.8.4](https://github.com/coredns/coredns/releases/tag/v1.8.4) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.1.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.2.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.3.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.4.md <br><br> ***---NOTE---*** CoreDNS must be granted list and watch access to EndpointSlices |
 | v1.21              |  [v1.8.0](https://github.com/coredns/coredns/releases/tag/v1.8.0) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.7.1.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.0.md <br><br> ***---DEPRECATIONS---***  <br><br> <ul> <li>The `transfer` option in the _kubernetes_ plugin has been removed. Zone transfers can be enabled with the new _transfer_ plugin.</li> </ul> |
 | v1.20              |  [v1.7.0](https://github.com/coredns/coredns/releases/tag/v1.7.0) |  |
