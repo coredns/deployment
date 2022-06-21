@@ -10,6 +10,8 @@ On a debian system:
   - Run `dpkg-buildpackage -us -uc -b  --target-arch ARCH`
     Where ARCH can be any of the released architectures, like "amd64" or "arm".
   - Most users will just run: `dpkg-buildpackage -us -uc -b`
+  - Note that any existing environment variables will override the default makefile variables in [debian/rules](debian/rules)
+  - The above can be used, for example, to build a particular verison by setting the `VERSION` environment variable
 
 To install:
 
