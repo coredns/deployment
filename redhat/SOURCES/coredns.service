@@ -1,0 +1,17 @@
+[Unit]
+After=network.target
+Description=coredns server
+Documentation=http://coredns.io
+
+[Service]
+User=coredns
+Type=simple
+EnvironmentFile=/etc/sysconfig/coredns
+ExecStart=/usr/bin/coredns --conf=/etc/coredns/Corefile $EXTRA_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10
+SuccessExitStatus=0
+
+[Install]
+WantedBy=multi-user.target
