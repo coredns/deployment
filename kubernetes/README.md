@@ -1,4 +1,6 @@
-# Kubernetes
+# Kubernetes - DEPRECATED
+
+**These kube-dns/CoreDNS migration scripts and templates are deprecated. For deploying coredns, use the coredns helm chart, or the yaml templates maintained by kubeadm.**
 
 ## Description
 CoreDNS can run in place of the standard Kube-DNS in Kubernetes. Using the *kubernetes*
