@@ -80,6 +80,7 @@ metadata:
   labels:
     k8s-app: kube-dns
     kubernetes.io/name: "CoreDNS"
+    app.kubernetes.io/name: coredns
 spec:
   # replicas: not specified here:
   # 1. Default is 1.
@@ -91,10 +92,12 @@ spec:
   selector:
     matchLabels:
       k8s-app: kube-dns
+      app.kubernetes.io/name: coredns
   template:
     metadata:
       labels:
         k8s-app: kube-dns
+        app.kubernetes.io/name: coredns
     spec:
       priorityClassName: system-cluster-critical
       serviceAccountName: coredns
@@ -180,9 +183,11 @@ metadata:
     k8s-app: kube-dns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
+    app.kubernetes.io/name: coredns
 spec:
   selector:
     k8s-app: kube-dns
+    app.kubernetes.io/name: coredns
   clusterIP: CLUSTER_DNS_IP
   ports:
   - name: dns
