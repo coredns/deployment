@@ -10,3 +10,4 @@ In order to work, you need to do following jobs:
 - Put `Corefile` at `/etc/coredns/Corefile`
 - Put `coredns-sysusers.conf` in `/usr/lib/sysusers.d`
 - Put `coredns-tmpfiles.conf` in `/usr/lib/tmpfiles.d`
+- Put `coredns-log.conf.conf` in `/etc/logrotate.d`
