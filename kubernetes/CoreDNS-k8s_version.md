@@ -5,6 +5,8 @@ This document records the CoreDNS version that was installed by kubeadm with eac
 
 | Kubernetes Version |      CoreDNS version installed by kubeadm      |  Changes in CoreDNS from previous release to Kubernetes |
 |:------------------:|:-------------------------:|:----------|
+|       v1.27        | [v1.10.1](https://github.com/coredns/coredns/releases/tag/v1.10.1) | |
+|       v1.26        | [v1.9.3](https://github.com/coredns/coredns/releases/tag/v1.9.3) | |
 |       v1.25        | [v1.9.3](https://github.com/coredns/coredns/releases/tag/v1.9.3) | |
 |       v1.24        |  [v1.8.6](https://github.com/coredns/coredns/releases/tag/v1.8.6) |  |
 |       v1.23        |  [v1.8.6](https://github.com/coredns/coredns/releases/tag/v1.8.6) | https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.5.md <br>https://github.com/coredns/coredns/blob/master/notes/coredns-1.8.6.md |
