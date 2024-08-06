@@ -10,15 +10,15 @@ initWorkingDir: &initWorkingDir
     mkdir -p ~/go/out/tests
     mkdir -p ~/go/out/logs
     mkdir -p /home/circleci/logs
-    GOROOT=$(go env GOROOT)
-    sudo rm -r $(go env GOROOT)
-    sudo mkdir $GOROOT
-    LATEST=$(curl -s https://go.dev/VERSION?m=text)
-    curl https://dl.google.com/go/${LATEST}.linux-amd64.tar.gz | sudo tar xz -C $GOROOT --strip-components=1
+    sudo rm -r /usr/local/go
+    sudo mkdir -p /usr/local/go
+    LATEST=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+    sudo wget https://go.dev/dl/${LATEST}.linux-amd64.tar.gz -O go.tar.gz
+    sudo tar -xzvf go.tar.gz -C /usr/local
 
 integrationDefaults: &integrationDefaults
   machine:
-    image: ubuntu-1604:201903-01
+    image: ubuntu-2204:2024.05.1
   working_directory: ~/go/src/${CIRCLE_PROJECT_USERNAME}/deployment
   environment:
     - K8S_VERSION: v1.22.0
