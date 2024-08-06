@@ -163,6 +163,10 @@ spec:
             port: 8181
             scheme: HTTP
       dnsPolicy: Default
+      securityContext:
+        sysctls:
+        - name: net.ipv4.ip_unprivileged_port_start
+          value: "53"
       volumes:
         - name: config-volume
           configMap:
