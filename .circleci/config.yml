@@ -18,7 +18,7 @@ initWorkingDir: &initWorkingDir
 
 integrationDefaults: &integrationDefaults
   machine:
-    image: ubuntu-1604:201903-01
+    image: ubuntu-2204:2024.05.1
   working_directory: ~/go/src/${CIRCLE_PROJECT_USERNAME}/deployment
   environment:
     - K8S_VERSION: v1.22.0
